@@ -156,70 +156,43 @@
             {% endif %}
           </fieldset>
         {%- elsif block_settings.variant_style == 'dropdowns' -%}
-          {% liquid
-            assign selected_value_label = nil
-            for product_option_value in product_option.values
-              if product_option_value.selected
-                assign selected_value_label = product_option_value | escape
-              endif
-            endfor
-            assign has_explicit_variant = false
-            if request.page_type == 'product'
-              assign current_url = request.path | append: '?' | append: request.query_string
-              if request.query_string contains 'variant='
-                assign has_explicit_variant = true
-              endif
-            endif
-            assign show_selected = has_explicit_variant
-            assign display_label = product_option.name
-            if show_selected and selected_value_label
-              assign display_label = selected_value_label
-            endif
-          %}
-          {%- assign fieldset_index = forloop.index0 -%}
-          <fieldset
-            class="variant-option variant-option--custom-dropdown"
-            data-fieldset-index="{{ fieldset_index }}"
-            ref="fieldsets[]"
-            {% unless show_selected %}data-needs-selection{% endunless %}
-          >
-            <details class="custom-dropdown__details" data-key="custom-dropdown">
-              <summary class="custom-dropdown__summary">
-                <span class="custom-dropdown__label">
-                  {{- display_label -}}
-                </span>
-                <svg aria-hidden="true" focusable="false" class="custom-dropdown__caret" viewBox="0 0 10 6" width="10" height="6">
-                  {%- render 'icon', icon: 'caret' -%}
-                </svg>
-              </summary>
-              <div class="custom-dropdown__panel">
+          <div class="variant-option variant-option--dropdowns variant-option--minimal">
+            <label for="Option-{{ block.id }}-{{ forloop.index0 }}">{{ product_option.name | escape }}</label>
+            <div class="variant-option__select-wrapper variant-option__select-wrapper--minimal">
+              <select
+                id="Option-{{ block.id }}-{{ forloop.index0 }}"
+                name="options[{{ product_option.name | escape }}]"
+                class="variant-option__select variant-option__select--minimal"
+              >
                 {%- for product_option_value in product_option.values -%}
-                  <label class="custom-dropdown__option{% if product_option_value.selected and show_selected %} custom-dropdown__option--selected{% endif %}{% if product_option_value.available == false %} custom-dropdown__option--unavailable{% endif %}">
-                    <input
-                      type="radio"
-                      name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
-                      value="{{ product_option_value | escape }}"
-                      data-current-checked="{% if product_option_value.selected %}true{% else %}false{% endif %}"
-                      data-previous-checked="false"
-                      data-fieldset-index="{{ fieldset_index }}"
-                      data-input-index="{{ forloop.index0 }}"
-                      data-option-value-id="{{ product_option_value.id }}"
-                      data-option-available="{{ product_option_value.available }}"
-                      data-connected-product-url="{{ product_option_value.product_url }}"
-                      {% if product_option_value.variant.id %}
-                        data-variant-id="{{ product_option_value.variant.id }}"
-                      {% endif %}
-                      {% if product_option_value.selected %}checked{% endif %}
-                    >
-                    <span class="custom-dropdown__option-text">{{ product_option_value | escape }}</span>
-                    {% if product_option_value.available == false %}
-                      <span class="custom-dropdown__option-unavailable">{{ 'content.unavailable' | t }}</span>
+                  <option
+                    value="{{ product_option_value | escape }}"
+                    data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
+                    data-option-value-id="{{ product_option_value.id }}"
+                    data-variant-id="{{ product_option_value.variant.id }}"
+                    data-connected-product-url="{{ product_option_value.product_url }}"
+                    {% if product_option_value.selected %}
+                      selected="selected"
                     {% endif %}
-                  </label>
+                  >
+                    {% if product_option_value.available == false %}
+                      {{ product_option_value | escape }} - {{ 'content.unavailable' | t }}
+                    {% else %}
+                      {{ product_option_value | escape }}
+                    {% endif %}
+                  </option>
                 {%- endfor -%}
-              </div>
-            </details>
-          </fieldset>
+              </select>
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                class="icon icon-caret"
+                viewBox="0 0 10 6"
+              >
+                {%- render 'icon', icon: 'caret' -%}
+              </svg>
+            </div>
+          </div>
         {%- endif -%}
       {%- endfor -%}
 
@@ -228,7 +201,6 @@
       </script>
     </form>
   </variant-picker>
-  <script src="{{ 'custom-dropdown.js' | asset_url }}" defer></script>
 {% endunless %}
 
 {% stylesheet %}
@@ -317,93 +289,39 @@
     justify-content: right;
   }
 
-  /* Custom dropdown styles */
-  .variant-option--custom-dropdown {
-    width: 100%;
-    position: relative;
-    border: 0;
-    padding: 0;
-    margin: 0;
-  }
-
-  .variant-option--custom-dropdown input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-  }
-
-  .custom-dropdown__summary {
+  /* Minimal dropdown styles */
+  .variant-option--minimal {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    list-style: none;
-    font-size: var(--font-size--body);
+    gap: 0;
   }
 
-  .custom-dropdown__summary::-webkit-details-marker {
+  .variant-option--minimal > label {
     display: none;
   }
 
-  .custom-dropdown__caret {
-    display: flex;
-    transition: transform 0.2s ease;
+  .variant-option__select-wrapper--minimal {
+    border: 0;
+    border-radius: 0;
+    margin-top: 0;
+    overflow: visible;
   }
 
-  .custom-dropdown__details[open] > .custom-dropdown__summary .custom-dropdown__caret {
-    transform: rotate(180deg);
-  }
-
-  .custom-dropdown__panel {
-    position: absolute;
-    top: 100%;
-    left: -12px;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    padding: 12px;
-    margin-top: 4px;
-    background: var(--color-background);
-    min-width: 100px;
-    border: 1px solid var(--color-foreground);
-  }
-
-  .custom-dropdown__option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0;
-    cursor: pointer;
+  .variant-option__select--minimal {
+    padding: 0;
+    padding-right: 16px;
     font-size: var(--font-size--body);
-    line-height: 1.6;
+    cursor: pointer;
+    background: transparent;
   }
 
-  .custom-dropdown__option:hover .custom-dropdown__option-text {
-    text-decoration: underline;
+  .variant-option__select-wrapper--minimal .icon {
+    right: 0;
+    width: 10px;
+    height: 10px;
   }
 
-  .custom-dropdown__option--selected .custom-dropdown__option-text {
-    text-decoration: underline;
-  }
-
-  .custom-dropdown__option--unavailable {
-    opacity: 0.35;
-  }
-
-  .custom-dropdown__option--unavailable .custom-dropdown__option-text {
-    text-decoration: line-through;
-  }
-
-  .custom-dropdown__option-unavailable {
-    font-size: var(--font-size--xs);
-    opacity: 0.6;
-  }
-
-  /* Disable add-to-cart when no size selected */
-  .variant-option--custom-dropdown[data-needs-selection] ~ .buy-buttons-block [ref="addToCartButton"] {
-    pointer-events: none;
-    opacity: 0.4;
+  .variant-option__select-wrapper--minimal:hover {
+    border-color: transparent;
   }
 {% endstylesheet %}
