@@ -190,8 +190,10 @@
     border-radius: calc(
       var(--style-border-radius-buttons-primary) + min(var(--padding-sm), var(--style-border-radius-buttons-primary))
     );
-    box-shadow: var(--shadow-popover);
+    box-shadow: none;
+    border: 1px solid var(--color-primary-button-background);
     padding: var(--padding-sm);
+    background: var(--color-background);
     /* Layout styling */
     display: flex;
     align-items: center;
@@ -203,16 +205,7 @@
     }
 
     &::before {
-      --border: 2px;
-      content: '';
-      position: absolute;
-      inset: calc(var(--border) * -1);
-      background: linear-gradient(var(--color-background) 0 100%), linear-gradient(hsl(0 0% 0% / 0.15) 0 100%);
-      background-clip: content-box, border-box;
-      border: var(--border) solid #0000;
-      border-radius: inherit;
-      z-index: -1;
-      backdrop-filter: blur(20px) saturate(180%) brightness(1.5);
+      display: none;
     }
   }
 
