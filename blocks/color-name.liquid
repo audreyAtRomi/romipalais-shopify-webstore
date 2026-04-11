@@ -3,7 +3,7 @@
   if request.visual_preview_mode and product_resource == blank
     assign product_resource = collections.all.products.first
   endif
-  assign color_name = product_resource.metafields.custom.color_name.value
+  assign color_name = product_resource.title | split: ' in ' | last
 %}
 
 {% if color_name != blank %}
