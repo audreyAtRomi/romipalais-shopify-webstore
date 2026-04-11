@@ -174,12 +174,12 @@
                     {% if product_option_value.selected %}
                       selected="selected"
                     {% endif %}
-                  >
                     {% if product_option_value.available == false %}
-                      {{ product_option_value | escape }} - {{ 'content.unavailable' | t }}
-                    {% else %}
-                      {{ product_option_value | escape }}
+                      disabled
+                      style="text-decoration: line-through;"
                     {% endif %}
+                  >
+                    {{- product_option_value | escape -}}
                   </option>
                 {%- endfor -%}
               </select>
