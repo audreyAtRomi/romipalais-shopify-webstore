@@ -51,7 +51,7 @@
             "custom_width_mobile": 92,
             "height": "fill",
             "details_position": "center",
-            "gap": 12,
+            "gap": 8,
             "sticky_details_desktop": true,
             "inherit_color_scheme": true,
             "color_scheme": "",
