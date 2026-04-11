@@ -52,7 +52,9 @@
   }
 
   .accordion--caret .icon-plus,
-  .accordion--plus .icon-caret {
+  .accordion--plus .icon-caret,
+  .accordion--none .icon-caret,
+  .accordion--none .icon-plus {
     display: none;
   }
 
@@ -84,6 +86,10 @@
       "id": "icon",
       "label": "t:settings.icon",
       "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
         {
           "value": "caret",
           "label": "t:options.caret"
