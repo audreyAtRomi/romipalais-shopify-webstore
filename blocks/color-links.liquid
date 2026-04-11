@@ -9,6 +9,12 @@
 %}
 
 {% if color_siblings != blank and color_siblings.size > 0 %}
+  {% liquid
+    assign current_color_name = product_resource.title | split: ' in ' | last
+    if current_color_name == product_resource.title
+      assign current_color_name = nil
+    endif
+  %}
   <div
     class="product-color-links product-color-links--{{ alignment }} spacing-style"
     style="{% render 'spacing-style', settings: block.settings %}"
@@ -45,6 +51,9 @@
           </a>
         {%- endfor -%}
       </div>
+      {%- if current_color_name != blank -%}
+        <span class="product-color-links__color-name">{{ current_color_name }}</span>
+      {%- endif -%}
     </fieldset>
   </div>
 {% endif %}
@@ -94,12 +103,26 @@
     border-color: rgb(var(--color-foreground-rgb) / 0.3);
   }
 
+  .product-color-links__color-name {
+    display: block;
+    font-size: var(--font-size--body);
+    margin-top: 4px;
+  }
+
   .product-color-links--center .product-color-links__swatches {
     justify-content: center;
   }
 
+  .product-color-links--center .product-color-links__color-name {
+    text-align: center;
+  }
+
   .product-color-links--right .product-color-links__swatches {
     justify-content: flex-end;
+  }
+
+  .product-color-links--right .product-color-links__color-name {
+    text-align: right;
   }
 {% endstylesheet %}
 
