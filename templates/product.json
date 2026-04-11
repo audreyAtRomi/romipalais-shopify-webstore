@@ -62,10 +62,10 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
-            "padding-block-start": 64,
-            "padding-block-end": 64,
-            "padding-inline-start": 64,
-            "padding-inline-end": 64
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 40,
+            "padding-inline-end": 40
           },
           "blocks": {
             "group_titlecolor": {
