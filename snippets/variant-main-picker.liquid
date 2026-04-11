@@ -164,7 +164,13 @@
               endif
             endfor
           %}
-          <div class="variant-option variant-option--custom-dropdown" data-no-preselect>
+          {%- assign fieldset_index = forloop.index0 -%}
+          <fieldset
+            class="variant-option variant-option--custom-dropdown"
+            data-fieldset-index="{{ fieldset_index }}"
+            data-no-preselect
+            ref="fieldsets[]"
+          >
             {%- comment -%} Desktop: details/summary triggered by the label {%- endcomment -%}
             <details class="custom-dropdown__details">
               <summary class="custom-dropdown__summary">
@@ -180,12 +186,18 @@
                   <label class="custom-dropdown__option{% if product_option_value.selected %} custom-dropdown__option--selected{% endif %}{% if product_option_value.available == false %} custom-dropdown__option--unavailable{% endif %}">
                     <input
                       type="radio"
-                      name="options[{{ product_option.name | escape }}]-{{ block.id }}"
+                      name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
                       value="{{ product_option_value | escape }}"
-                      data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
+                      data-current-checked="{% if product_option_value.selected %}true{% else %}false{% endif %}"
+                      data-previous-checked="false"
+                      data-fieldset-index="{{ fieldset_index }}"
+                      data-input-index="{{ forloop.index0 }}"
                       data-option-value-id="{{ product_option_value.id }}"
-                      data-variant-id="{{ product_option_value.variant.id }}"
+                      data-option-available="{{ product_option_value.available }}"
                       data-connected-product-url="{{ product_option_value.product_url }}"
+                      {% if product_option_value.variant.id %}
+                        data-variant-id="{{ product_option_value.variant.id }}"
+                      {% endif %}
                       {% if product_option_value.selected %}checked{% endif %}
                       class="visually-hidden"
                     >
@@ -238,7 +250,7 @@
                 {%- endfor -%}
               </div>
             </dialog>
-          </div>
+          </fieldset>
         {%- endif -%}
       {%- endfor -%}
 
@@ -340,6 +352,9 @@
   .variant-option--custom-dropdown {
     width: 100%;
     position: relative;
+    border: 0;
+    padding: 0;
+    margin: 0;
   }
 
   .custom-dropdown__summary {
