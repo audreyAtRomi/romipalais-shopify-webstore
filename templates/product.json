@@ -50,7 +50,7 @@
             "width_mobile": "fill",
             "custom_width_mobile": 100,
             "height": "fit",
-            "details_position": "flex-start",
+            "details_position": "center",
             "gap": 12,
             "sticky_details_desktop": true,
             "inherit_color_scheme": true,
