@@ -9,6 +9,14 @@
 %}
 
 {% if color_siblings != blank and color_siblings.size > 0 %}
+  {% liquid
+    assign current_color_name = nil
+    for sibling in color_siblings
+      if sibling.id == product_resource.id
+        assign current_color_name = sibling.metafields.custom.color_name.value | default: sibling.title
+      endif
+    endfor
+  %}
   <div
     class="product-color-links product-color-links--{{ alignment }} spacing-style"
     style="{% render 'spacing-style', settings: block.settings %}"
@@ -18,32 +26,35 @@
       <legend class="visually-hidden">
         {{- 'products.color_variants.label' | t -}}
       </legend>
-      <div class="product-color-links__swatches">
-        {%- for sibling in color_siblings -%}
-          {% liquid
-            assign is_current = false
-            if sibling.id == product_resource.id
-              assign is_current = true
-            endif
-            assign swatch_color = sibling.metafields.custom.swatch_color.value
-          %}
-          <a
-            href="{{ sibling.url }}"
-            class="product-color-links__circle{% if is_current %} product-color-links__circle--active{% endif %}"
-            title="{{ sibling.title }}"
-            {% if is_current %}aria-current="page"{% endif %}
-          >
-            {%- if swatch_color != blank -%}
-              <span
-                class="product-color-links__color"
-                style="background: {{ swatch_color }}"
-              ></span>
-            {%- else -%}
-              <span class="product-color-links__color product-color-links__color--empty"></span>
-            {%- endif -%}
-            <span class="visually-hidden">{{ sibling.title }}</span>
-          </a>
-        {%- endfor -%}
+      <div class="product-color-links__row">
+        <div class="product-color-links__swatches">
+          {%- for sibling in color_siblings -%}
+            {% liquid
+              assign is_current = false
+              if sibling.id == product_resource.id
+                assign is_current = true
+              endif
+              assign swatch_color = sibling.metafields.custom.swatch_color.value
+            %}
+            <a
+              href="{{ sibling.url }}"
+              class="product-color-links__circle{% if is_current %} product-color-links__circle--active{% endif %}"
+              title="{{ sibling.title }}"
+              {% if is_current %}aria-current="page"{% endif %}
+            >
+              {%- if swatch_color != blank -%}
+                <span
+                  class="product-color-links__color"
+                  style="background: {{ swatch_color }}"
+                ></span>
+              {%- else -%}
+                <span class="product-color-links__color product-color-links__color--empty"></span>
+              {%- endif -%}
+              <span class="visually-hidden">{{ sibling.title }}</span>
+            </a>
+          {%- endfor -%}
+        </div>
+        <span class="product-color-links__color-name">{{ current_color_name }}</span>
       </div>
     </fieldset>
   </div>
@@ -57,15 +68,16 @@
     margin: 0;
   }
 
-  .product-color-links__fieldset legend {
-    padding: 0;
-    margin-bottom: var(--margin-2xs);
+  .product-color-links__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .product-color-links__swatches {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
   }
 
@@ -73,8 +85,8 @@
     display: block;
     text-decoration: none;
     border-radius: 50%;
-    padding: 2px;
-    border: 1.5px solid transparent;
+    padding: 1.5px;
+    border: 1px solid transparent;
     transition: border-color 0.15s ease;
   }
 
@@ -88,8 +100,8 @@
 
   .product-color-links__color {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 1em;
+    height: 1em;
     border-radius: 50%;
     border: 0.5px solid rgb(var(--color-foreground-rgb) / 0.15);
   }
@@ -99,11 +111,16 @@
     border-color: rgb(var(--color-foreground-rgb) / 0.3);
   }
 
-  .product-color-links--center .product-color-links__swatches {
+  .product-color-links__color-name {
+    font-size: var(--font-size--body);
+    white-space: nowrap;
+  }
+
+  .product-color-links--center .product-color-links__row {
     justify-content: center;
   }
 
-  .product-color-links--right .product-color-links__swatches {
+  .product-color-links--right .product-color-links__row {
     justify-content: flex-end;
   }
 {% endstylesheet %}
