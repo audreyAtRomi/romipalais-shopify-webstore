@@ -342,7 +342,7 @@
                 "accordion_row_iJM37V": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Care",
+                    "heading": "Fit",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
@@ -381,7 +381,7 @@
                 "accordion_row_pLFDcD": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Design",
+                    "heading": "Material & care",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
