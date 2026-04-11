@@ -8,6 +8,7 @@
   assign alignment = block.settings.alignment | default: 'left'
 %}
 
+<!-- DEBUG: product={{ product_resource.title }} metafield={{ product_resource.metafields.custom.color_siblings }} siblings_count={{ color_siblings.size }} -->
 {% if color_siblings != blank and color_siblings.size > 0 %}
   <div
     class="product-color-links product-color-links--{{ alignment }} spacing-style"
