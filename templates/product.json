@@ -118,6 +118,7 @@
             },
             "divider_HrJgFt": {
               "type": "_divider",
+              "disabled": true,
               "name": "t:names.divider",
               "settings": {
                 "thickness": 1,
