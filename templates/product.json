@@ -312,7 +312,7 @@
                     "text_n7A9da": {
                       "type": "text",
                       "settings": {
-                        "text": "{{ closest.product.description }}",
+                        "text": "{{ closest.product.description }}<p>The 90's Top features a clean halter neckline and an adjustable back secured with our custom toggle hardware. Designed to drape effortlessly through the body with a straight, easy fit that finishes at the hip. Minimal in front, functional in back.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
