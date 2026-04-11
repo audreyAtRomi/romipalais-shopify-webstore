@@ -142,6 +142,9 @@
       style="{% render 'spacing-style', settings: block_settings %}{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
       aria-label="{{ 'accessibility.filters' | t }}"
     >
+      {% if collection.title %}
+        <h1 class="facets__collection-title">{{ collection.title }}</h1>
+      {% endif %}
       <facets-form-component
         class="facets__form-wrapper"
         section-id="{{ section.id }}"
@@ -659,6 +662,15 @@
         max-width: 100%;
       }
     }
+  }
+
+  .facets__collection-title {
+    margin: 0;
+    white-space: nowrap;
+    font-size: var(--font-h2--size, 1.5rem);
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    margin-right: auto;
   }
 
   .facets--horizontal {
