@@ -135,6 +135,21 @@
     min-width: 100%;
   }
 
+  @media screen and (min-width: 750px) {
+    .product-information__media {
+      position: sticky;
+      top: var(--header-group-height, 0px);
+      height: calc(100vh - var(--header-group-height, 0px));
+      overflow-y: auto;
+      align-self: start;
+      scrollbar-width: none;
+    }
+
+    .product-information__media::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   .product-information__media .product-media-gallery__placeholder-image {
     width: 100%;
     height: 100%;
