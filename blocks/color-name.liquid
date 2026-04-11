@@ -9,7 +9,7 @@
 {% if color_name != blank %}
   <span
     class="product-color-name spacing-style"
-    style="{% render 'spacing-style', settings: block.settings %}"
+    style="white-space: nowrap; {% render 'spacing-style', settings: block.settings %}"
     {{ block.shopify_attributes }}
   >
     {{- color_name -}}
