@@ -211,7 +211,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h3>Sign up for our newsletter</h3>",
+                    "text": "<h3>Newsletter</h3>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -241,7 +241,7 @@
                     "custom_width": 100,
                     "inherit_color_scheme": true,
                     "color_scheme": "",
-                    "heading": "Email",
+                    "heading": "",
                     "heading_preset": "h3",
                     "border_style": "underline",
                     "border_width": 1,
