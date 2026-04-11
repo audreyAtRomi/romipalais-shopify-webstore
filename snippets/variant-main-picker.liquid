@@ -163,19 +163,30 @@
                 assign selected_value_label = product_option_value | escape
               endif
             endfor
+            assign has_explicit_variant = false
+            if request.page_type == 'product'
+              assign current_url = request.path | append: '?' | append: request.query_string
+              if request.query_string contains 'variant='
+                assign has_explicit_variant = true
+              endif
+            endif
+            assign show_selected = has_explicit_variant
+            assign display_label = product_option.name
+            if show_selected and selected_value_label
+              assign display_label = selected_value_label
+            endif
           %}
           {%- assign fieldset_index = forloop.index0 -%}
           <fieldset
             class="variant-option variant-option--custom-dropdown"
             data-fieldset-index="{{ fieldset_index }}"
-            data-no-preselect
             ref="fieldsets[]"
+            {% unless show_selected %}data-needs-selection{% endunless %}
           >
-            {%- comment -%} Desktop: details/summary triggered by the label {%- endcomment -%}
-            <details class="custom-dropdown__details">
+            <details class="custom-dropdown__details" data-key="custom-dropdown">
               <summary class="custom-dropdown__summary">
-                <span class="custom-dropdown__label" data-default-label="{{ product_option.name | escape }}">
-                  {{- selected_value_label | default: product_option.name -}}
+                <span class="custom-dropdown__label">
+                  {{- display_label -}}
                 </span>
                 <svg aria-hidden="true" focusable="false" class="custom-dropdown__caret" viewBox="0 0 10 6" width="10" height="6">
                   {%- render 'icon', icon: 'caret' -%}
@@ -183,7 +194,7 @@
               </summary>
               <div class="custom-dropdown__panel">
                 {%- for product_option_value in product_option.values -%}
-                  <label class="custom-dropdown__option{% if product_option_value.selected %} custom-dropdown__option--selected{% endif %}{% if product_option_value.available == false %} custom-dropdown__option--unavailable{% endif %}">
+                  <label class="custom-dropdown__option{% if product_option_value.selected and show_selected %} custom-dropdown__option--selected{% endif %}{% if product_option_value.available == false %} custom-dropdown__option--unavailable{% endif %}">
                     <input
                       type="radio"
                       name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
@@ -199,7 +210,6 @@
                         data-variant-id="{{ product_option_value.variant.id }}"
                       {% endif %}
                       {% if product_option_value.selected %}checked{% endif %}
-                      class="visually-hidden"
                     >
                     <span class="custom-dropdown__option-text">{{ product_option_value | escape }}</span>
                     {% if product_option_value.available == false %}
@@ -209,47 +219,6 @@
                 {%- endfor -%}
               </div>
             </details>
-
-            {%- comment -%} Mobile: full-screen drawer {%- endcomment -%}
-            <button class="custom-dropdown__mobile-trigger" type="button" aria-haspopup="dialog">
-              <span class="custom-dropdown__label" data-default-label="{{ product_option.name | escape }}">
-                {{- selected_value_label | default: product_option.name -}}
-              </span>
-              <svg aria-hidden="true" focusable="false" class="custom-dropdown__caret" viewBox="0 0 10 6" width="10" height="6">
-                {%- render 'icon', icon: 'caret' -%}
-              </svg>
-            </button>
-            <dialog class="custom-dropdown__drawer">
-              <div class="custom-dropdown__drawer-header">
-                <span class="custom-dropdown__drawer-title">{{ product_option.name | escape }}</span>
-                <button type="button" class="custom-dropdown__drawer-close" aria-label="Close">
-                  <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
-                    <path d="M13 1L1 13M1 1l12 12" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="custom-dropdown__drawer-options">
-                {%- for product_option_value in product_option.values -%}
-                  <label class="custom-dropdown__option{% if product_option_value.selected %} custom-dropdown__option--selected{% endif %}{% if product_option_value.available == false %} custom-dropdown__option--unavailable{% endif %}">
-                    <input
-                      type="radio"
-                      name="options[{{ product_option.name | escape }}]-{{ block.id }}-mobile"
-                      value="{{ product_option_value | escape }}"
-                      data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
-                      data-option-value-id="{{ product_option_value.id }}"
-                      data-variant-id="{{ product_option_value.variant.id }}"
-                      data-connected-product-url="{{ product_option_value.product_url }}"
-                      {% if product_option_value.selected %}checked{% endif %}
-                      class="visually-hidden"
-                    >
-                    <span class="custom-dropdown__option-text">{{ product_option_value | escape }}</span>
-                    {% if product_option_value.available == false %}
-                      <span class="custom-dropdown__option-unavailable">{{ 'content.unavailable' | t }}</span>
-                    {% endif %}
-                  </label>
-                {%- endfor -%}
-              </div>
-            </dialog>
           </fieldset>
         {%- endif -%}
       {%- endfor -%}
@@ -357,6 +326,14 @@
     margin: 0;
   }
 
+  .variant-option--custom-dropdown input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
   .custom-dropdown__summary {
     display: inline-flex;
     align-items: center;
@@ -424,91 +401,9 @@
     opacity: 0.6;
   }
 
-  /* Hide mobile trigger on desktop */
-  .custom-dropdown__mobile-trigger {
-    display: none;
-  }
-
-  .custom-dropdown__drawer {
-    display: none;
-  }
-
-  /* Mobile: full-screen drawer */
-  @media screen and (max-width: 749px) {
-    .custom-dropdown__details {
-      display: none;
-    }
-
-    .custom-dropdown__mobile-trigger {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      font: inherit;
-      color: inherit;
-    }
-
-    .custom-dropdown__drawer {
-      display: block;
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
-      margin: 0;
-      padding: 0;
-      border: 0;
-      background: var(--color-background);
-      color: var(--color-foreground);
-      z-index: var(--layer-modal, 999);
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-    }
-
-    .custom-dropdown__drawer[open] {
-      transform: translateY(0);
-    }
-
-    .custom-dropdown__drawer::backdrop {
-      background: rgb(0 0 0 / 0.4);
-    }
-
-    .custom-dropdown__drawer-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--padding-lg);
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .custom-dropdown__drawer-title {
-      font-size: var(--font-size--body-lg);
-      font-weight: var(--font-weight-semibold);
-    }
-
-    .custom-dropdown__drawer-close {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: var(--padding-sm);
-      color: inherit;
-    }
-
-    .custom-dropdown__drawer-options {
-      display: flex;
-      flex-direction: column;
-      padding: var(--padding-md) 0;
-      overflow-y: auto;
-      max-height: calc(100vh - 60px);
-    }
-
-    .custom-dropdown__drawer-options .custom-dropdown__option {
-      padding: var(--padding-md) var(--padding-lg);
-      font-size: var(--font-size--body-lg);
-    }
+  /* Disable add-to-cart when no size selected */
+  .variant-option--custom-dropdown[data-needs-selection] ~ .buy-buttons-block [ref="addToCartButton"] {
+    pointer-events: none;
+    opacity: 0.4;
   }
 {% endstylesheet %}
