@@ -34,10 +34,10 @@
     flex-wrap: nowrap;
     gap: 4px;
     align-items: center;
-    justify-content: var(--product-swatches-alignment, flex-start);
-
     @media screen and (max-width: 749px) {
       justify-content: flex-start;
+      align-self: flex-start;
+      margin-inline-end: auto;
     }
     padding-block-start: var(--product-swatches-padding-block-start, 4px);
     padding-block-end: var(--product-swatches-padding-block-end, 0);
