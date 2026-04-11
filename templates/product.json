@@ -84,6 +84,7 @@
                 "width_mobile": "fill",
                 "custom_width_mobile": 100,
                 "height": "fit",
+                "custom_height": 100,
                 "inherit_color_scheme": true,
                 "color_scheme": "",
                 "background_media": "none",
@@ -97,6 +98,9 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -107,7 +111,7 @@
                   "type": "text",
                   "name": "t:names.title",
                   "settings": {
-                    "text": "<h1>{{ closest.product.title | split: ' in ' | first }}</h1>",
+                    "text": "<h1>{{ closest.product.title }}</h1>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -147,14 +151,15 @@
                 "color_links_wD67c6"
               ]
             },
-            "group_pricecolor": {
+            "group_3jAMXc": {
               "type": "group",
+              "name": "t:names.group",
               "settings": {
                 "content_direction": "row",
-                "vertical_on_mobile": false,
+                "vertical_on_mobile": true,
                 "horizontal_alignment": "space-between",
                 "vertical_alignment": "center",
-                "align_baseline": true,
+                "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
                 "gap": 12,
@@ -163,6 +168,7 @@
                 "width_mobile": "fill",
                 "custom_width_mobile": 100,
                 "height": "fit",
+                "custom_height": 100,
                 "inherit_color_scheme": true,
                 "color_scheme": "",
                 "background_media": "none",
@@ -176,20 +182,24 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
                 "padding-block-start": 0,
-                "padding-block-end": 8,
+                "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {
-                "price_a7krng": {
+                "price_4LHRx8": {
                   "type": "price",
+                  "name": "t:names.product_price",
                   "settings": {
                     "show_sale_price_first": true,
                     "show_installments": false,
                     "show_tax_info": false,
-                    "type_preset": "h5",
-                    "width": "fit-content",
+                    "type_preset": "",
+                    "width": "100%",
                     "alignment": "left",
                     "font": "var(--font-body--family)",
                     "font_size": "1rem",
@@ -204,8 +214,9 @@
                   },
                   "blocks": {}
                 },
-                "color_name_Rk3mP1": {
+                "color_name_jkBfQJ": {
                   "type": "color-name",
+                  "name": "t:names.color_name",
                   "settings": {
                     "padding-block-start": 0,
                     "padding-block-end": 0,
@@ -216,8 +227,8 @@
                 }
               },
               "block_order": [
-                "price_a7krng",
-                "color_name_Rk3mP1"
+                "price_4LHRx8",
+                "color_name_jkBfQJ"
               ]
             },
             "variant_picker_R3rGDr": {
@@ -416,7 +427,7 @@
           },
           "block_order": [
             "group_titlecolor",
-            "group_pricecolor",
+            "group_3jAMXc",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
             "accordion_NKWPiW"
