@@ -3,11 +3,77 @@
   if request.visual_preview_mode and product_resource == blank
     assign product_resource = collections.all.products.first
   endif
+
+  assign color_siblings = product_resource.metafields.custom.color_siblings.value
+  assign alignment = block.settings.alignment | default: 'left'
 %}
 
-{% unless product_resource == blank %}
-  {% render 'product-color-links', product: product_resource, block: block %}
-{% endunless %}
+{% if color_siblings != blank and color_siblings.size > 0 %}
+  <div
+    class="product-color-links product-color-links--{{ alignment }} spacing-style"
+    style="{% render 'spacing-style', settings: block.settings %}"
+    {{ block.shopify_attributes }}
+  >
+    <fieldset class="variant-option variant-option--buttons variant-option--swatches product-color-links__fieldset">
+      <legend>
+        {{- 'products.color_variants.label' | t -}}
+        <span class="variant-option__swatch-value">{{ product_resource.title }}</span>
+      </legend>
+      {%- for sibling in color_siblings -%}
+        {% liquid
+          assign is_current = false
+          if sibling.id == product_resource.id
+            assign is_current = true
+          endif
+          assign swatch_color = sibling.metafields.custom.swatch_color.value
+        %}
+        <a
+          href="{{ sibling.url }}"
+          class="variant-option__button-label variant-option__button-label--has-swatch{% if is_current %} product-color-links__swatch--active{% endif %}"
+          title="{{ sibling.title }}"
+          {% if is_current %}aria-current="page"{% endif %}
+        >
+          {%- if swatch_color != blank -%}
+            <span
+              class="swatch swatch--unscaled"
+              style="--swatch-background: {{ swatch_color }}"
+            ></span>
+          {%- else -%}
+            <span class="swatch swatch--unscaled swatch--unavailable"></span>
+          {%- endif -%}
+          <span class="visually-hidden">{{ sibling.title }}</span>
+        </a>
+      {%- endfor -%}
+    </fieldset>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .product-color-links__fieldset {
+    width: 100%;
+  }
+
+  .product-color-links__swatch--active {
+    --focus-outline: var(--focus-outline-width) solid var(--color-foreground);
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+    border-radius: var(--variant-picker-swatch-radius);
+  }
+
+  .product-color-links--center .product-color-links__fieldset {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .product-color-links--right .product-color-links__fieldset {
+    text-align: right;
+    justify-content: right;
+  }
+
+  .product-color-links a {
+    text-decoration: none;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
