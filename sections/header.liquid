@@ -420,7 +420,7 @@
 
     display: block;
     contain: layout style;
-    background: transparent;
+    background: var(--color-background);
 
     a,
     .button,
@@ -452,6 +452,7 @@
   }
 
   .header[transparent] {
+    background: transparent;
     --language-button-background-color: transparent;
     --language-button-border-color: transparent;
     --header-content-transition-timing: calc(var(--submenu-animation-speed) - var(--animation-speed-fast))
