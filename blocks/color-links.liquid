@@ -10,10 +10,7 @@
 
 {% if color_siblings != blank and color_siblings.size > 0 %}
   {% liquid
-    assign current_color_name = product_resource.title | split: ' in ' | last
-    if current_color_name == product_resource.title
-      assign current_color_name = nil
-    endif
+    assign current_color_name = product_resource.metafields.custom.color_name.value
   %}
   <div
     class="product-color-links product-color-links--{{ alignment }} spacing-style"
