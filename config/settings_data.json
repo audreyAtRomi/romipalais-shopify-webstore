@@ -38,6 +38,7 @@
     "type_line_height_h6": "display-loose",
     "type_letter_spacing_h6": "heading-normal",
     "type_case_h6": "none",
+    "page_width": "normal",
     "page_transition_enabled": false,
     "transition_to_main_product": false,
     "add_to_cart_animation": false,
