@@ -1,29 +1,22 @@
-/**
- * Custom size dropdown — minimal JS.
- * All state (label text, selected class, checked radios) is server-rendered
- * by Liquid and preserved through morph. JS only closes the dropdown on pick.
- */
-document.addEventListener('change', (e) => {
-  if (e.target.type !== 'radio') return;
-  const details = e.target.closest('.custom-dropdown__details');
-  if (!details) return;
+// Custom size dropdown: syncs visual dropdown clicks to the hidden native <select>
+document.addEventListener('click', (e) => {
+  const option = e.target.closest('.size-dropdown__option');
+  if (!option) return;
 
-  // Update label to show selected value
-  const text = e.target.closest('.custom-dropdown__option')
-    ?.querySelector('.custom-dropdown__option-text')?.textContent?.trim();
-  const fieldset = details.closest('.variant-option--custom-dropdown');
-  if (text && fieldset) {
-    fieldset.querySelector('.custom-dropdown__label').textContent = text;
+  // Don't select sold out sizes
+  if (option.classList.contains('size-dropdown__option--sold-out')) return;
+
+  const container = option.closest('.variant-option--custom-select');
+  const details = option.closest('.size-dropdown');
+  const select = container?.querySelector('.variant-option__hidden-select');
+  const label = details?.querySelector('.size-dropdown__label');
+  const value = option.dataset.value;
+
+  if (select && value) {
+    select.value = value;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
-  // Update selected styling
-  details.querySelectorAll('.custom-dropdown__option').forEach((o) =>
-    o.classList.remove('custom-dropdown__option--selected'));
-  e.target.closest('.custom-dropdown__option')?.classList.add('custom-dropdown__option--selected');
-
-  // Close dropdown
-  details.removeAttribute('open');
-
-  // Remove needs-selection flag (enables add-to-cart via CSS sibling selector)
-  if (fieldset) fieldset.removeAttribute('data-needs-selection');
+  if (label) label.textContent = value;
+  if (details) details.removeAttribute('open');
 });
