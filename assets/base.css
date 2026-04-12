@@ -18,6 +18,10 @@ body {
   font-family: 'Sohne', sans-serif !important;
 }
 
+p {
+  color: #000;
+}
+
 :root {
   --hover-lift-amount: 4px;
   --hover-scale-amount: 1.03;
