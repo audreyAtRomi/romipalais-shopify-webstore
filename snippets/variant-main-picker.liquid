@@ -157,7 +157,7 @@
           </fieldset>
         {%- elsif block_settings.variant_style == 'dropdowns' -%}
           {% liquid
-            assign selected_label = product_option.name | escape
+            assign selected_label = product_option.selected_value | escape
           %}
           <div class="variant-option variant-option--custom-select">
             {%- comment -%} Hidden native select for variant picker JS {%- endcomment -%}
