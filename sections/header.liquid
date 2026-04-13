@@ -1,7 +1,11 @@
 
 
 {% liquid
-  assign order = 'logo,menu,localization,search,actions'
+  assign order = 'logo,menu,localization,search,drawer_search,actions'
+
+  if shop.customer_accounts_enabled
+    assign order = 'drawer_search,logo,menu,localization,search,actions'
+  endif
 
   assign rows = 'top,bottom' | split: ','
   assign search_style = 'none'
@@ -72,23 +76,23 @@
   if section.settings.localization_position == 'left'
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'logo,search,localization,menu,actions'
+        assign order = 'drawer_search,logo,search,localization,menu,actions'
       else
-        assign order = 'logo,search,localization,menu,actions'
+        assign order = 'logo,search,localization,menu,drawer_search,actions'
       endif
     else
       if shop.customer_accounts_enabled
-        assign order = 'logo,localization,menu,search,actions'
+        assign order = 'drawer_search,logo,localization,menu,search,actions'
       else
-        assign order = 'logo,localization,menu,search,actions'
+        assign order = 'logo,localization,menu,search,drawer_search,actions'
       endif
     endif
   else
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'logo,search,menu,localization,actions'
+        assign order = 'drawer_search,logo,search,menu,localization,actions'
       else
-        assign order = 'logo,search,menu,localization,actions'
+        assign order = 'logo,search,menu,localization,drawer_search,actions'
       endif
     endif
   endif
@@ -438,7 +442,7 @@
   }
 
   #header-component[data-menu-style='drawer'] .header__column {
-    gap: 12px;
+    display: contents;
   }
 
   @media screen and (min-width: 750px) {
@@ -693,6 +697,11 @@
   .header__column {
     display: flex;
     align-items: center;
+
+    /* on mobile, header__column nodes are ignored to create a new grid-template-area based on all visible content */
+    @media screen and (max-width: 749px) {
+      display: contents;
+    }
   }
 
   .header__column--left,
@@ -763,12 +772,64 @@
       }
     }
 
+    @media screen and (max-width: 749px) {
+      --header-template-columns: var(--header-mobile-bookend) var(--header-mobile-bookend) 1fr
+        var(--header-mobile-bookend) var(--header-mobile-bookend);
+
+      grid-template-areas: 'leftA leftB center rightA rightB';
+      grid-column: span 3;
+      column-gap: 0;
+      align-items: center;
+      padding-block: 0;
+      padding-inline: 0 var(--padding-3xs);
+
+      .header-logo {
+        grid-area: center;
+      }
+
+      &:not(:has(header-actions)) .search-action {
+        grid-area: leftB;
+      }
+
+      &:not(:has(shopify-account)) .search-action {
+        grid-area: rightA;
+      }
+
+      .search-action {
+        grid-area: leftB;
+      }
+
+      header-actions {
+        grid-area: rightB;
+      }
+    }
   }
 
   /* not ideal but we need to duplicate these styles for when touch comes into play
     We could avoid the duplication using js to set the data-menu-style attribute on small screens instead of using @media queries */
   #header-component[data-menu-style='drawer'] .header__columns {
+    --header-template-columns: var(--header-mobile-bookend) 1fr
+      var(--header-mobile-bookend) var(--header-mobile-bookend);
+
+    grid-template-areas: 'leftA center rightA rightB';
     grid-column: span 3;
+    column-gap: 0;
+    align-items: center;
+    padding-block: 0;
+    padding-inline: 0 var(--padding-3xs);
+
+    .header-logo {
+      grid-area: center;
+    }
+
+    .search-action {
+      grid-area: rightA;
+      justify-self: end;
+    }
+
+    header-actions {
+      grid-area: rightB;
+    }
   }
 
   /* Single column layout if there are no columns within */
