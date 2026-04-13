@@ -55,14 +55,12 @@
     scroll-lock
   >
     <summary
-      class="header__icon header__icon--menu header__icon--summary"
+      class="header__icon header__icon--menu header__icon--summary header-drawer__text-trigger"
       aria-label="{{ 'accessibility.menu' | t }}"
       on:click="/toggle"
     >
-      <span class="svg-wrapper header-drawer-icon header-drawer-icon--open">
-        {{- 'icon-menu.svg' | inline_asset_content -}}
-      </span>
-      <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
+      <span class="header-drawer-icon header-drawer-icon--open">Menu</span>
+      <span class="header-drawer-icon header-drawer-icon--close">
         {{- 'icon-close.svg' | inline_asset_content -}}
       </span>
     </summary>
@@ -848,6 +846,16 @@
     @media screen and (min-width: 750px) {
       display: flex;
     }
+  }
+
+  .header-drawer__text-trigger {
+    font-size: 12px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .header-drawer__text-trigger::-webkit-details-marker {
+    display: none;
   }
 
   .menu-drawer {
