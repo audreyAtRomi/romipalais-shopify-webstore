@@ -258,7 +258,6 @@
     },
     "logo_RVGHD7": {
       "type": "logo",
-      "disabled": true,
       "name": "t:names.logo",
       "settings": {
         "inverse": false,

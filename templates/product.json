@@ -480,7 +480,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 16,
+            "product_card_gap": 12,
             "inherit_color_scheme": true,
             "color_scheme": "",
             "border": "none",
@@ -722,7 +722,7 @@
         "columns": 4,
         "mobile_columns": "2",
         "columns_gap": 16,
-        "rows_gap": 16,
+        "rows_gap": 32,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
