@@ -442,8 +442,6 @@
   }
 
   #header-component[data-menu-style='drawer'] .header__column {
-    display: flex;
-    align-items: center;
     gap: 12px;
   }
 
@@ -699,11 +697,6 @@
   .header__column {
     display: flex;
     align-items: center;
-
-    /* on mobile, header__column nodes are ignored to create a new grid-template-area based on all visible content */
-    @media screen and (max-width: 749px) {
-      display: contents;
-    }
   }
 
   .header__column--left,
