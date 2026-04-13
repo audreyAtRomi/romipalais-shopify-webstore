@@ -442,7 +442,9 @@
   }
 
   #header-component[data-menu-style='drawer'] .header__column {
-    display: contents;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   @media screen and (min-width: 750px) {
@@ -808,25 +810,7 @@
   /* not ideal but we need to duplicate these styles for when touch comes into play
     We could avoid the duplication using js to set the data-menu-style attribute on small screens instead of using @media queries */
   #header-component[data-menu-style='drawer'] .header__columns {
-    display: flex;
-    align-items: center;
-    padding: 12px;
     grid-column: span 3;
-    gap: 12px;
-
-    .header-logo {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-
-    .search-action {
-      order: 2;
-    }
-
-    header-actions {
-      order: 3;
-    }
   }
 
   /* Single column layout if there are no columns within */
