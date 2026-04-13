@@ -25,6 +25,9 @@
   >
     <span class="{% if display_style == 'icon' %}hidden{% endif %}">
       {{ 'content.cart_title' | t }}
+      {%- if cart.item_count > 0 -%}
+        (<span ref="cartBubbleCount" data-testid="cart-bubble">{{ cart.item_count }}</span>)
+      {%- endif -%}
     </span>
 
     <span
@@ -33,8 +36,6 @@
     >
       {{ 'icon-cart.svg' | inline_asset_content }}
     </span>
-
-    {% render 'cart-bubble', limit: 100 %}
   </cart-icon>
 {% endcapture %}
 
@@ -715,5 +716,9 @@
     .header-actions__account {
       display: none !important;
     }
+  }
+
+  .header-actions__cart-icon--text .cart-bubble {
+    display: none;
   }
 {% endstylesheet %}
