@@ -767,37 +767,6 @@
       }
     }
 
-    @media screen and (max-width: 749px) {
-      --header-template-columns: var(--header-mobile-bookend) var(--header-mobile-bookend) 1fr
-        var(--header-mobile-bookend) var(--header-mobile-bookend);
-
-      grid-template-areas: 'leftA leftB center rightA rightB';
-      grid-column: span 3;
-      column-gap: 0;
-      align-items: center;
-      padding-block: 0;
-      padding-inline: 0 var(--padding-3xs);
-
-      .header-logo {
-        grid-area: center;
-      }
-
-      &:not(:has(header-actions)) .search-action {
-        grid-area: leftB;
-      }
-
-      &:not(:has(shopify-account)) .search-action {
-        grid-area: rightA;
-      }
-
-      .search-action {
-        grid-area: leftB;
-      }
-
-      header-actions {
-        grid-area: rightB;
-      }
-    }
   }
 
   /* not ideal but we need to duplicate these styles for when touch comes into play
