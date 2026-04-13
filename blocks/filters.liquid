@@ -610,10 +610,7 @@
   }
 
   .facets-mobile-wrapper {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-sm);
-    justify-content: flex-end;
+    display: none;
   }
 
   .facets-mobile-wrapper--multiple-controls {
@@ -674,12 +671,11 @@
   }
 
   .facets--horizontal {
-    display: none;
+    padding-block: var(--padding-block-start) var(--padding-block-end);
+    display: flex;
+    align-items: center;
 
     @media screen and (min-width: 750px) {
-      padding-block: var(--padding-block-start) var(--padding-block-end);
-      display: flex;
-      align-items: center;
       position: relative;
       z-index: var(--facets-upper-z-index);
       border: none;
