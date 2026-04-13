@@ -83,7 +83,7 @@
       endif
     %}
     <div
-      class="account-button header-actions__action mobile:hidden{% if display_style == 'text' %} account-button--text{% endif %} color-{{ settings.popover_color_scheme }}"
+      class="account-button header-actions__action header-actions__account{% if display_style == 'text' %} account-button--text{% endif %} color-{{ settings.popover_color_scheme }}"
     >
       <shopify-account
         menu="{{ customer_account_menu }}"
@@ -708,6 +708,12 @@
 
     .header__column--right .header-actions--text {
       margin-inline-start: 0;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .header-actions__account {
+      display: none !important;
     }
   }
 {% endstylesheet %}
