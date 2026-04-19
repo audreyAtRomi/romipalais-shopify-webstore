@@ -5,11 +5,10 @@
   endif
 %}
 
-{% if product_resource.type != blank %}
-  <div class="size-guide" {{ block.shopify_attributes }}>
-    {% render 'size-guide-tables', product: product_resource %}
-  </div>
-{% endif %}
+<!-- DEBUG: type={{ product_resource.type }} category={{ product_resource.category.name }} waist={{ product_resource.metafields.custom.measurement_waist.value }} -->
+<div class="size-guide" {{ block.shopify_attributes }}>
+  {% render 'size-guide-tables', product: product_resource %}
+</div>
 
 {% schema %}
 {
