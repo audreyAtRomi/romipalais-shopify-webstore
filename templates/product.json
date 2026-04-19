@@ -390,7 +390,7 @@
                     "text_VdG98J": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>{{ closest.product.metafields.custom.size_and_fit | metafield_tag }}</p><p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p><p>{{ closest.product.metafields.custom.garment_measurements | metafield_tag }}</p>",
+                        "text": "<p>{{ closest.product.metafields.custom.size_and_fit | metafield_tag }}</p><p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p><p></p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
