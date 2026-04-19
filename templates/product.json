@@ -351,7 +351,7 @@
                     "text_qLGEN9": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>Our dedication to excellence extends beyond materials; it encompasses the artistry and craftsmanship illustrated in every piece we create.</p>",
+                        "text": "<p>{{ closest.product.metafields.custom.material_and_care | metafield_tag }}</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
