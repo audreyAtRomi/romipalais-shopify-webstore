@@ -1,0 +1,26 @@
+{% liquid
+  assign product_resource = closest.product
+  if request.visual_preview_mode and product_resource == blank
+    assign product_resource = collections.all.products.first
+  endif
+%}
+
+{% if product_resource.metafields.custom.size_guide != blank %}
+  <div class="size-guide" {{ block.shopify_attributes }}>
+    {{ product_resource.metafields.custom.size_guide }}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Size guide",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Size guide",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
