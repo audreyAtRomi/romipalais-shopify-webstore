@@ -7,7 +7,7 @@
 
 {% if product_resource.metafields.custom.size_guide != blank %}
   <div class="size-guide" {{ block.shopify_attributes }}>
-    {{ product_resource.metafields.custom.size_guide }}
+    {{ product_resource.metafields.custom.size_guide.value }}
   </div>
 {% endif %}
 
