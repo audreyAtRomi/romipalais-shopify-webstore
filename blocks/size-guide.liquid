@@ -5,9 +5,9 @@
   endif
 %}
 
-{% if product_resource.metafields.custom.size_guide != blank %}
+{% if product_resource.type != blank %}
   <div class="size-guide" {{ block.shopify_attributes }}>
-    {{ product_resource.metafields.custom.size_guide.value }}
+    {% render 'size-guide-tables', product_type: product_resource.type %}
   </div>
 {% endif %}
 
