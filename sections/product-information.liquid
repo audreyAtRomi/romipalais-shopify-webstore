@@ -4,6 +4,7 @@
   {{ closest.product | structured_data }}
 </script>
 <script src="{{ 'product-title-clean.js' | asset_url }}" defer></script>
+<style>[data-testid="product-information-details"] h1 { visibility: hidden; }</style>
 
 {% capture media_gallery %}
   {%- content_for 'block',
