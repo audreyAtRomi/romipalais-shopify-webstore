@@ -390,7 +390,7 @@
                     "text_VdG98J": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>{{ closest.product.metafields.custom.size_and_fit | metafield_tag }}</p><p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p><p></p>",
+                        "text": "<p>{{ closest.product.metafields.custom.size_and_fit | metafield_tag }}</p><p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -411,17 +411,10 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
-                    },
-                    "size_guide_Y87hFj": {
-                      "type": "size-guide",
-                      "name": "Size guide",
-                      "settings": {},
-                      "blocks": {}
                     }
                   },
                   "block_order": [
-                    "text_VdG98J",
-                    "size_guide_Y87hFj"
+                    "text_VdG98J"
                   ]
                 }
               },
