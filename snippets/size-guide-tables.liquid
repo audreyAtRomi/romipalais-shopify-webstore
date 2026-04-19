@@ -7,25 +7,25 @@
 
 {% liquid
   assign type = product.type | downcase
+  assign category = product.category.name | downcase | default: ''
   assign sizes = 'XS,S,M,L' | split: ','
 
-  case type
-    when 'tops', 'top'
-      assign headers = 'Bust,Length' | split: ','
-      assign fields = 'bust,length' | split: ','
-    when 'pants', 'jeans', 'pant'
-      assign headers = 'Waist,Rise,Hip,Inseam' | split: ','
-      assign fields = 'waist,rise,hip,inseam' | split: ','
-    when 'dress', 'dresses'
-      assign headers = 'Bust,Waist,Hip,Length' | split: ','
-      assign fields = 'bust,waist,hip,length' | split: ','
-    when 'skirt', 'skirts'
-      assign headers = 'Waist,Hip,Length' | split: ','
-      assign fields = 'waist,hip,length' | split: ','
-    else
-      assign headers = nil
-      assign fields = nil
-  endcase
+  assign headers = nil
+  assign fields = nil
+
+  if type contains 'top' or type contains 'shirt' or type contains 'blouse' or category contains 'top' or category contains 'shirt'
+    assign headers = 'Bust,Length' | split: ','
+    assign fields = 'bust,length' | split: ','
+  elsif type contains 'pant' or type contains 'jean' or category contains 'pant' or category contains 'jean'
+    assign headers = 'Waist,Rise,Hip,Inseam' | split: ','
+    assign fields = 'waist,rise,hip,inseam' | split: ','
+  elsif type contains 'dress' or category contains 'dress'
+    assign headers = 'Bust,Waist,Hip,Length' | split: ','
+    assign fields = 'bust,waist,hip,length' | split: ','
+  elsif type contains 'skirt' or category contains 'skirt'
+    assign headers = 'Waist,Hip,Length' | split: ','
+    assign fields = 'waist,hip,length' | split: ','
+  endif
 %}
 
 {% if fields != blank %}
