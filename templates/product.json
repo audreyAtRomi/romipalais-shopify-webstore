@@ -390,7 +390,7 @@
                     "text_VdG98J": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>{{ closest.product.metafields.custom.size_and_fit | metafield_tag }}</p><p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p><p></p>",
+                        "text": "<p>{{ closest.product.metafields.custom.size_and_fit | metafield_tag }}</p><p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p>{{ closest.product.metafields.custom.product_measurements | metafield_tag }}",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -411,19 +411,10 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
-                    },
-                    "custom_liquid_WiLxYC": {
-                      "type": "custom-liquid",
-                      "name": "t:names.custom_liquid",
-                      "settings": {
-                        "custom_liquid": "<table>                                              \n    <thead>                                          \n      <tr>\n        <th>Size</th>\n        <th>Bust</th>\n        <th>Waist</th>\n        <th>Hip</th>                                \n      </tr>\n    </thead>                                           \n    <tbody>                                          \n      <tr>\n        <td>XS</td>\n        <td>30.5\"</td>\n        <td>24.5\"</td>                                   \n        <td>35.5\"</td>\n      </tr>                                            \n      <tr>                                           \n        <td>S</td>\n        <td>32\"</td>                                   \n        <td>26\"</td>\n        <td>37\"</td>                                   \n      </tr>                                            \n      <tr>                                           \n        <td>M</td>\n        <td>33.5\"</td>                                   \n        <td>27.5\"</td>\n        <td>38.5\"</td>                                   \n      </tr>                                            \n      <tr>                                           \n        <td>L</td>\n        <td>35\"</td>                                   \n        <td>29\"</td>\n        <td>40\"</td>                                   \n      </tr>                                             \n    </tbody>\n  </table>"
-                      },
-                      "blocks": {}
                     }
                   },
                   "block_order": [
-                    "text_VdG98J",
-                    "custom_liquid_WiLxYC"
+                    "text_VdG98J"
                   ]
                 }
               },
