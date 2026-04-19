@@ -7,18 +7,18 @@
 
 {% if product_resource.type != blank %}
   <div class="size-guide" {{ block.shopify_attributes }}>
-    {% render 'size-guide-tables', product_type: product_resource.type %}
+    {% render 'size-guide-tables', product: product_resource %}
   </div>
 {% endif %}
 
 {% schema %}
 {
-  "name": "Size guide",
+  "name": "Product measurements",
   "tag": null,
   "settings": [],
   "presets": [
     {
-      "name": "Size guide",
+      "name": "Product measurements",
       "category": "t:categories.product"
     }
   ]

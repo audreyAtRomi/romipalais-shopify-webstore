@@ -1,0 +1,90 @@
+{%- doc -%}
+  Static size guide modal. Same for all products.
+  Triggered by a "Size Guide" link.
+{%- enddoc -%}
+
+<a href="#" class="size-guide-trigger" onclick="event.preventDefault(); this.closest('.variant-picker, .product-details').querySelector('.size-guide-dialog').showModal();">
+  Size Guide
+</a>
+
+<dialog class="size-guide-dialog">
+  <div class="size-guide-dialog__content">
+    <div class="size-guide-dialog__header">
+      <h3 class="size-guide-dialog__title">Size Guide</h3>
+      <button type="button" class="size-guide-dialog__close" onclick="this.closest('dialog').close();" aria-label="Close">
+        <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+          <path d="M13 1L1 13M1 1l12 12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>
+      </button>
+    </div>
+    <p>All measurements are in inches.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Bust</th>
+          <th>Waist</th>
+          <th>Hips</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>XS</td><td>30.5</td><td>24.5</td><td>35.5</td></tr>
+        <tr><td>S</td><td>32</td><td>26</td><td>37</td></tr>
+        <tr><td>M</td><td>33.5</td><td>27.5</td><td>38.5</td></tr>
+        <tr><td>L</td><td>35</td><td>29</td><td>40</td></tr>
+      </tbody>
+    </table>
+  </div>
+</dialog>
+
+{% stylesheet %}
+  .size-guide-trigger {
+    font-size: var(--font-size--body);
+    color: var(--color-foreground);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
+  .size-guide-dialog {
+    border: none;
+    padding: 0;
+    max-width: 500px;
+    width: 90vw;
+    border-radius: 0;
+  }
+
+  .size-guide-dialog::backdrop {
+    background: rgb(0 0 0 / 0.4);
+  }
+
+  .size-guide-dialog__content {
+    padding: 32px;
+  }
+
+  .size-guide-dialog__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .size-guide-dialog__title {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .size-guide-dialog__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--color-foreground);
+  }
+
+  .size-guide-dialog p {
+    margin-bottom: 12px;
+    font-size: var(--font-size--body);
+    opacity: 0.6;
+  }
+{% endstylesheet %}
