@@ -808,26 +808,27 @@
   /* not ideal but we need to duplicate these styles for when touch comes into play
     We could avoid the duplication using js to set the data-menu-style attribute on small screens instead of using @media queries */
   #header-component[data-menu-style='drawer'] .header__columns {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    --header-template-columns: var(--header-mobile-bookend) 1fr
+      var(--header-mobile-bookend) var(--header-mobile-bookend);
+
+    grid-template-areas: 'leftA center rightA rightB';
     grid-column: span 3;
-    padding: 12px;
+    column-gap: 0;
+    align-items: center;
+    padding-block: 0;
+    padding-inline: 0 var(--padding-3xs);
 
     .header-logo {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      grid-area: center;
     }
 
     .search-action {
-      order: 2;
-      margin-left: auto;
+      grid-area: rightA;
+      justify-self: end;
     }
 
     header-actions {
-      order: 3;
+      grid-area: rightB;
     }
   }
 
