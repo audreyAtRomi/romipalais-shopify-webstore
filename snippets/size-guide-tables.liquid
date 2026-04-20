@@ -14,8 +14,8 @@
   assign fields = nil
 
   if type contains 'top' or type contains 'shirt' or type contains 'blouse' or category contains 'top' or category contains 'shirt'
-    assign headers = 'Bust,Length' | split: ','
-    assign fields = 'bust,length' | split: ','
+    assign headers = 'Bust,Waist,Length' | split: ','
+    assign fields = 'bust,waist,length' | split: ','
   elsif type contains 'pant' or type contains 'jean' or category contains 'pant' or category contains 'jean'
     assign headers = 'Waist,Rise,Hip,Inseam' | split: ','
     assign fields = 'waist,rise,hip,inseam' | split: ','
