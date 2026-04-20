@@ -68,9 +68,7 @@
     render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
   endcapture
 
-  if shop.customer_accounts_enabled
-    assign search_class = 'search-action--hidden-on-drawer'
-  endif
+  assign search_class = ''
 
   # Handle localization positioning
   if section.settings.localization_position == 'left'
@@ -108,12 +106,7 @@
     assign skip_drawer_search = true
   endif
 
-  if section.settings.search_row == 'bottom' or search_style != 'none' and skip_drawer_search == false
-    # Mobile search duplicate for when search is not in the right order for mobile layout
-    capture drawer_search
-      render 'search', class: 'search-action--hidden-on-menu', style: search_style, display_style: section.settings.actions_display_style
-    endcapture
-  endif
+  assign drawer_search = ''
 
   assign show_language = section.settings.show_language
   if localization.available_languages.size <= 1
