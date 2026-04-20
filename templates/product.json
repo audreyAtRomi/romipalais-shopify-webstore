@@ -780,7 +780,7 @@
         "max_products": 6,
         "columns": 4,
         "mobile_columns": "2",
-        "columns_gap": 8,
+        "columns_gap": 12,
         "rows_gap": 14,
         "icons_style": "arrow",
         "icons_shape": "none",
