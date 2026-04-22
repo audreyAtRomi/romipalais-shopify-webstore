@@ -17,13 +17,13 @@
     assign headers = 'Bust,Waist,Length' | split: ','
     assign fields = 'bust,waist,length' | split: ','
   elsif type contains 'pant' or type contains 'jean' or category contains 'pant' or category contains 'jean'
-    assign headers = 'Waist,Rise,Hip,Inseam' | split: ','
+    assign headers = 'Low waist,Rise,Hip,Inseam' | split: ','
     assign fields = 'waist,rise,hip,inseam' | split: ','
   elsif type contains 'dress' or category contains 'dress'
     assign headers = 'Bust,Waist,Hip,Length' | split: ','
     assign fields = 'bust,waist,hip,length' | split: ','
   elsif type contains 'skirt' or category contains 'skirt'
-    assign headers = 'Waist,Hip,Length' | split: ','
+    assign headers = 'Low waist,Hip,Length' | split: ','
     assign fields = 'waist,hip,length' | split: ','
   endif
 %}
