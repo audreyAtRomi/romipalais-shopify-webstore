@@ -1032,6 +1032,8 @@
   dropdown-localization-component {
     position: relative;
     background-color: transparent;
+    display: flex;
+    align-items: center;
   }
 
   dropdown-localization-component .country-filter {
@@ -1047,12 +1049,12 @@
     margin-inline: 8px;
   }
 
-  dropdown-localization-component .localization-form__list-item:hover,
-  dropdown-localization-component .localization-form__list-item:focus {
+  dropdown-localization-component .localization-form__list-item:not([hidden]):hover,
+  dropdown-localization-component .localization-form__list-item:not([hidden]):focus {
     background-color: transparent;
   }
 
-  dropdown-localization-component .localization-form__list-item:hover .country {
+  dropdown-localization-component .localization-form__list-item:not([hidden]):hover .country {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
