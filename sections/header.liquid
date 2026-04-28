@@ -1130,6 +1130,7 @@
   /* Search modal → inline bar below header (all screen sizes) */
   .search-modal__content {
     position: fixed !important;
+    z-index: var(--layer-overlay) !important;
     margin: 0 !important;
     top: var(--header-group-height) !important;
     left: 0 !important;
@@ -1216,17 +1217,88 @@
 {% endunless %}
 
 <script>
-  // Prevent layout shift (scrollbar disappearing) when search modal opens
+  // Override the search modal to use non-modal dialog.show() so the page
+  // stays fully interactive (hover, scroll, clicks) while search is open.
+  // Outside-click and Escape close are handled manually.
   (function () {
-    const searchModal = document.querySelector('#search-modal');
-    if (!searchModal) return;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    searchModal.addEventListener('dialog:open', function () {
-      if (scrollbarWidth > 0) document.documentElement.style.paddingRight = scrollbarWidth + 'px';
-    });
-    searchModal.addEventListener('dialog:close', function () {
-      document.documentElement.style.paddingRight = '';
-    });
+    function initSearchModal() {
+      var searchModalEl = document.querySelector('#search-modal');
+      if (!searchModalEl) return;
+      var dialog = searchModalEl.querySelector('dialog');
+      if (!dialog) return;
+
+      var outsideClickHandler = null;
+      var escapeHandler = null;
+      var isClosing = false;
+
+      searchModalEl.showDialog = function () {
+        if (dialog.open) return;
+
+        dialog.show(); // non-modal: no backdrop, no inert, no scroll lock
+        searchModalEl.dispatchEvent(new CustomEvent('dialog:open'));
+
+        outsideClickHandler = function (e) {
+          if (!dialog.contains(e.target)) {
+            searchModalEl.closeDialog();
+          }
+        };
+        escapeHandler = function (e) {
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            searchModalEl.closeDialog();
+          }
+        };
+
+        // rAF so the triggering click doesn't immediately close
+        requestAnimationFrame(function () {
+          document.addEventListener('click', outsideClickHandler, true);
+          document.addEventListener('keydown', escapeHandler);
+        });
+      };
+
+      searchModalEl.closeDialog = function () {
+        if (!dialog.open || isClosing) return;
+        isClosing = true;
+
+        if (outsideClickHandler) {
+          document.removeEventListener('click', outsideClickHandler, true);
+          outsideClickHandler = null;
+        }
+        if (escapeHandler) {
+          document.removeEventListener('keydown', escapeHandler);
+          escapeHandler = null;
+        }
+
+        // Trigger close animation
+        dialog.style.animation = 'none';
+        void dialog.offsetWidth;
+        dialog.classList.add('dialog-closing');
+        dialog.style.animation = '';
+
+        var done = function () {
+          dialog.close();
+          dialog.classList.remove('dialog-closing');
+          isClosing = false;
+          searchModalEl.dispatchEvent(new CustomEvent('dialog:close'));
+        };
+
+        // Wait for CSS animation, with a fallback
+        var resolved = false;
+        var finish = function () {
+          if (resolved) return;
+          resolved = true;
+          done();
+        };
+        dialog.addEventListener('animationend', finish, { once: true });
+        setTimeout(finish, 300);
+      };
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSearchModal);
+    } else {
+      initSearchModal();
+    }
   })();
 </script>
 
