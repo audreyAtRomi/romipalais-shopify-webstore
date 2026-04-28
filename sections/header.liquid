@@ -1132,7 +1132,7 @@
     position: fixed !important;
     z-index: var(--layer-overlay) !important;
     margin: 0 !important;
-    top: var(--header-group-height) !important;
+    top: var(--header-group-height); /* no !important — JS inline style overrides this */
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
