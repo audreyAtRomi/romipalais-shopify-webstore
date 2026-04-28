@@ -1114,6 +1114,91 @@
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
   }
+
+  /* Search button underline — target text span directly to bypass flex container quirks */
+  .search-action .header-actions__action span:not(.svg-wrapper) {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .search-action .header-actions__action:hover span:not(.svg-wrapper) {
+    text-decoration-color: currentColor;
+  }
+
+  /* Search modal → inline bar below header (desktop only) */
+  @media screen and (min-width: 750px) {
+    .search-modal__content {
+      position: fixed !important;
+      margin: 0 !important;
+      top: var(--header-group-height) !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.2) !important;
+      overflow: visible !important;
+    }
+
+    .search-modal__content::backdrop {
+      background-color: transparent !important;
+    }
+
+    .dialog-modal[open].search-modal__content {
+      transform-origin: top center !important;
+      animation: search-bar-open 200ms ease forwards !important;
+    }
+
+    .dialog-modal.search-modal__content.dialog-closing {
+      animation: search-bar-close 150ms ease forwards !important;
+    }
+
+    .search-modal .predictive-search-form__header {
+      padding: 10px 40px !important;
+      border: none !important;
+    }
+
+    .search-modal .predictive-search-form__header-inner {
+      border: none !important;
+      background: transparent !important;
+    }
+
+    .search-modal .predictive-search__icon {
+      display: none !important;
+    }
+
+    .search-modal input.search-input {
+      padding-inline: 0 !important;
+    }
+  }
+
+  @keyframes search-bar-open {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes search-bar-close {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}
