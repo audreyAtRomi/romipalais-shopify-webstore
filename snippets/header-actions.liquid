@@ -24,10 +24,8 @@
     data-testid="cart-icon"
   >
     <span class="{% if display_style == 'icon' %}hidden{% endif %}">
-      {{ 'content.cart_title' | t }}
-      {%- if cart.item_count > 0 -%}
-        (<span ref="cartBubbleCount" data-testid="cart-bubble">{{ cart.item_count }}</span>)
-      {%- endif -%}
+      {{ 'content.cart_title' | t -}}
+      <span ref="cartTextWrapper"{% if cart.item_count == 0 %} hidden{% endif %}>(<span ref="cartBubbleCount" data-testid="cart-bubble">{{ cart.item_count }}</span>)</span>
     </span>
 
     <span

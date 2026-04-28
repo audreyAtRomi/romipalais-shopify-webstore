@@ -13,7 +13,8 @@ import { ThemeEvents, CartUpdateEvent } from '@theme/events';
  * @extends {Component<Refs>}
  */
 class CartIcon extends Component {
-  requiredRefs = ['cartBubble', 'cartBubbleText', 'cartBubbleCount'];
+  // cartBubble and cartBubbleText only exist in icon mode; cartBubbleCount is always required
+  requiredRefs = ['cartBubbleCount'];
 
   /** @type {number} */
   get currentCartCount() {
@@ -66,27 +67,31 @@ class CartIcon extends Component {
    * @param {boolean} comingFromProductForm - Whether the cart update is coming from the product form.
    */
   renderCartBubble = async (itemCount, comingFromProductForm, animate = true) => {
-    // If the cart update is coming from the product form, we add to the current cart count, otherwise we set the new cart count
-
-    this.refs.cartBubbleCount.classList.toggle('hidden', itemCount === 0);
-    this.refs.cartBubble.classList.toggle('visually-hidden', itemCount === 0);
-
     this.currentCartCount = comingFromProductForm ? this.currentCartCount + itemCount : itemCount;
+    const newCount = this.currentCartCount;
 
-    this.classList.toggle('header-actions__cart-icon--has-cart', itemCount > 0);
+    // Text mode: show/hide the "(N)" wrapper
+    if (this.refs.cartTextWrapper) {
+      this.refs.cartTextWrapper.hidden = newCount === 0;
+    }
+
+    // Icon mode: show/hide the cart bubble
+    this.refs.cartBubbleCount?.classList.toggle('hidden', newCount === 0);
+    this.refs.cartBubble?.classList.toggle('visually-hidden', newCount === 0);
+
+    this.classList.toggle('header-actions__cart-icon--has-cart', newCount > 0);
 
     sessionStorage.setItem(
       'cart-count',
       JSON.stringify({
-        value: String(this.currentCartCount),
+        value: String(newCount),
         timestamp: Date.now(),
       })
     );
 
-    if (!animate || itemCount === 0) return;
+    if (!animate || newCount === 0 || !this.refs.cartBubble || !this.refs.cartBubbleText) return;
 
     // Ensure element is visible before starting animation
-    // Use requestAnimationFrame to ensure the browser sees the state change
     await new Promise((resolve) => requestAnimationFrame(resolve));
 
     this.refs.cartBubble.classList.add('cart-bubble--animating');
