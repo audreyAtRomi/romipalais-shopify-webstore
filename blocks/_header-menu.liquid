@@ -279,7 +279,10 @@
     line-height: var(--menu-top-level-font-line-height);
     text-transform: var(--menu-top-level-font-case);
     color: var(--menu-top-level-font-color);
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--animation-speed) var(--animation-easing);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -304,6 +307,7 @@
     &:hover,
     &:focus {
       color: var(--menu-top-level-font-color);
+      text-decoration-color: currentColor;
     }
 
     @media screen and (min-width: 750px) {
@@ -330,18 +334,6 @@
 
   [slot='overflow'] > .menu-list__link::after {
     content: none;
-  }
-
-  /*
-    High specificity selectors to subdue non-hovered links without javascript.
-    If the need for js-generated `hovered` and `focused` classes arises for another reason we can simplify these.
-  */
-  .menu-list:where(:has(.menu-list__list-item:hover)),
-  .menu-list:where(:has(.menu-list__list-item:focus-within)),
-  .menu-list:where(:has(.menu-list__list-item:not([aria-hidden='true']) .menu-list__link--active)) {
-    .menu-list__link {
-      color: rgb(var(--menu-top-level-font-color-rgb) / var(--opacity-subdued-text));
-    }
   }
 
   /* stylelint-disable-next-line selector-max-specificity */
