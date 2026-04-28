@@ -1184,6 +1184,11 @@
 
   .search-modal input.search-input {
     padding-inline: 0 !important;
+    font-size: 12px !important;
+  }
+
+  .search-modal input.search-input::placeholder {
+    font-size: 12px !important;
   }
 
   @keyframes search-bar-open {
@@ -1233,6 +1238,12 @@
 
       searchModalEl.showDialog = function () {
         if (dialog.open) return;
+
+        // Position flush against the exact bottom of the header group
+        var headerGroup = document.querySelector('#header-group');
+        if (headerGroup) {
+          dialog.style.top = Math.round(headerGroup.getBoundingClientRect().bottom) + 'px';
+        }
 
         dialog.show(); // non-modal: no backdrop, no inert, no scroll lock
         searchModalEl.dispatchEvent(new CustomEvent('dialog:open'));
