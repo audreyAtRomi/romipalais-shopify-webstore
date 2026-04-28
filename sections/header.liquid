@@ -1145,7 +1145,13 @@
     }
 
     .search-modal__content::backdrop {
-      background-color: transparent !important;
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+
+    /* Hide predictive results — just a plain input bar */
+    .search-modal .predictive-search-form__content-wrapper {
+      display: none !important;
     }
 
     .dialog-modal[open].search-modal__content {
