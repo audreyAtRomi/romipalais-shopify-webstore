@@ -1222,9 +1222,9 @@
 {% endunless %}
 
 <script>
-  // Override the search modal to use non-modal dialog.show() so the page
-  // stays fully interactive (hover, scroll, clicks) while search is open.
-  // Outside-click and Escape close are handled manually.
+  // Override search modal to use non-modal dialog.show() — page stays fully
+  // interactive while search is open. Position tracks header dynamically so
+  // the bar stays flush even when the header shrinks on scroll.
   (function () {
     function initSearchModal() {
       var searchModalEl = document.querySelector('#search-modal');
@@ -1232,35 +1232,53 @@
       var dialog = searchModalEl.querySelector('dialog');
       if (!dialog) return;
 
+      var headerGroup = document.querySelector('#header-group');
       var outsideClickHandler = null;
       var escapeHandler = null;
       var isClosing = false;
+      var resizeObserver = null;
+      var rafId = null;
+
+      function updateTop() {
+        if (!dialog.open || !headerGroup) return;
+        dialog.style.top = Math.round(headerGroup.getBoundingClientRect().bottom) + 'px';
+      }
+
+      function scheduleUpdateTop() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          updateTop();
+        });
+      }
+
+      function startTracking() {
+        resizeObserver = new ResizeObserver(scheduleUpdateTop);
+        if (headerGroup) resizeObserver.observe(headerGroup);
+        window.addEventListener('scroll', scheduleUpdateTop, { passive: true });
+      }
+
+      function stopTracking() {
+        if (resizeObserver) { resizeObserver.disconnect(); resizeObserver = null; }
+        window.removeEventListener('scroll', scheduleUpdateTop);
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      }
 
       searchModalEl.showDialog = function () {
         if (dialog.open) return;
 
-        // Position flush against the exact bottom of the header group
-        var headerGroup = document.querySelector('#header-group');
-        if (headerGroup) {
-          dialog.style.top = Math.round(headerGroup.getBoundingClientRect().bottom) + 'px';
-        }
-
-        dialog.show(); // non-modal: no backdrop, no inert, no scroll lock
+        updateTop();          // set position before show() to avoid flicker
+        dialog.show();        // non-modal: no backdrop, no inert, no scroll lock
+        startTracking();      // keep position in sync as header changes
         searchModalEl.dispatchEvent(new CustomEvent('dialog:open'));
 
         outsideClickHandler = function (e) {
-          if (!dialog.contains(e.target)) {
-            searchModalEl.closeDialog();
-          }
+          if (!dialog.contains(e.target)) searchModalEl.closeDialog();
         };
         escapeHandler = function (e) {
-          if (e.key === 'Escape') {
-            e.preventDefault();
-            searchModalEl.closeDialog();
-          }
+          if (e.key === 'Escape') { e.preventDefault(); searchModalEl.closeDialog(); }
         };
 
-        // rAF so the triggering click doesn't immediately close
         requestAnimationFrame(function () {
           document.addEventListener('click', outsideClickHandler, true);
           document.addEventListener('keydown', escapeHandler);
@@ -1271,6 +1289,8 @@
         if (!dialog.open || isClosing) return;
         isClosing = true;
 
+        stopTracking();
+
         if (outsideClickHandler) {
           document.removeEventListener('click', outsideClickHandler, true);
           outsideClickHandler = null;
@@ -1280,25 +1300,19 @@
           escapeHandler = null;
         }
 
-        // Trigger close animation
         dialog.style.animation = 'none';
         void dialog.offsetWidth;
         dialog.classList.add('dialog-closing');
         dialog.style.animation = '';
 
-        var done = function () {
-          dialog.close();
-          dialog.classList.remove('dialog-closing');
-          isClosing = false;
-          searchModalEl.dispatchEvent(new CustomEvent('dialog:close'));
-        };
-
-        // Wait for CSS animation, with a fallback
         var resolved = false;
         var finish = function () {
           if (resolved) return;
           resolved = true;
-          done();
+          dialog.close();
+          dialog.classList.remove('dialog-closing');
+          isClosing = false;
+          searchModalEl.dispatchEvent(new CustomEvent('dialog:close'));
         };
         dialog.addEventListener('animationend', finish, { once: true });
         setTimeout(finish, 300);
