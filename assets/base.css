@@ -4243,6 +4243,56 @@ product-recommendations:has([data-has-recommendations='false']) {
     translate: 0px var(--atc-destination, 0px);
   }
 }
+/* Simplified add-to-cart success: checkmark only, no circle/burst/slide animations */
+.checkmark-burst .ring,
+.checkmark-burst .burst {
+  display: none;
+}
+
+.checkmark-burst .check {
+  scale: 1;
+  filter: none;
+}
+
+.checkmark-burst .tick {
+  scale: 1;
+}
+
+[data-added='true'] .add-to-cart-text,
+[data-added='true'] .add-to-cart__added {
+  animation-name: none;
+}
+
+.add-to-cart-button[data-added='true'] .add-to-cart-text {
+  clip-path: none;
+  filter: none;
+  opacity: 0;
+  transition: none;
+}
+
+.add-to-cart-button[data-added='true'] .checkmark-burst .check {
+  opacity: 1;
+  transition: none;
+}
+
+.add-to-cart-button[data-added='true'] .tick {
+  scale: 1;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .add-to-cart-button[data-added='true'] .check,
+  .add-to-cart-button[data-added='true'] .tick,
+  .add-to-cart-button[data-added='true'] .ring,
+  .add-to-cart-button[data-added='true'] .line {
+    transition: none;
+  }
+
+  .add-to-cart-text {
+    transition: none;
+  }
+}
+
 .password-page {
   background-image: url('{{ "landing.webp" | asset_url }}');
   background-size: cover;
