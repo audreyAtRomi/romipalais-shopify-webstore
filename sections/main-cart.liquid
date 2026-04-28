@@ -58,6 +58,19 @@
 {% render 'cart-items-component', children: cart_items_children, section_id: section.id %}
 
 {% stylesheet %}
+  /* 12px font size throughout cart page */
+  .cart-page,
+  .cart-page * {
+    font-size: 12px;
+  }
+
+  /* Remove global td border-bottom from cart table */
+  .cart-items__table td,
+  .cart-items__table th {
+    border-bottom: none;
+    padding: 0;
+  }
+
   .cart-page {
     display: grid;
     grid-template-columns: 1fr;
