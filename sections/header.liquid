@@ -1132,7 +1132,7 @@
     position: fixed !important;
     z-index: var(--layer-overlay) !important;
     margin: 0 !important;
-    top: var(--header-group-height); /* no !important — JS inline style overrides this */
+    /* top is set exclusively by JS via getBoundingClientRect — no CSS value here */
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
@@ -1240,7 +1240,7 @@
       var rafId = null;
 
       function updateTop() {
-        if (!dialog.open || !headerGroup) return;
+        if (!headerGroup) return;
         dialog.style.top = Math.round(headerGroup.getBoundingClientRect().bottom) + 'px';
       }
 
