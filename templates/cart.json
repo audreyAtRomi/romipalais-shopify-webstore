@@ -33,7 +33,7 @@
           "settings": {
             "gap": 24,
             "image_ratio": "adapt",
-            "dividers": false,
+            "dividers": true,
             "vendor": false,
             "padding-block-start": 0,
             "padding-block-end": 0,
