@@ -81,6 +81,25 @@
     border-bottom-color: #0072bb;
   }
 
+  /* Quantity + remove aligned top-right, same row as product name */
+  .cart-page .cart-items__table-row {
+    grid-template-columns: clamp(2.5rem, 15cqi, 7.5rem) minmax(0, 1fr) auto minmax(6rem, auto);
+    grid-template-areas:
+      'media details quantity price'
+      'media . . price'
+      'media error error error';
+  }
+
+  .cart-page .cart-items__quantity {
+    grid-area: quantity;
+    align-self: start;
+    margin-block-start: 0;
+  }
+
+  .cart-page .cart-items__price {
+    grid-area: price;
+  }
+
   .cart-page {
     display: grid;
     grid-template-columns: 1fr;
