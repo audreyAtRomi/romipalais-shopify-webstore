@@ -1132,7 +1132,7 @@
     position: fixed !important;
     z-index: var(--layer-overlay) !important;
     margin: 0 !important;
-    /* top is set exclusively by JS via getBoundingClientRect — no CSS value here */
+    top: var(--header-group-height) !important; /* CSS fallback; JS overrides with exact px via setProperty */
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
@@ -1241,7 +1241,7 @@
 
       function updateTop() {
         if (!headerGroup) return;
-        dialog.style.top = Math.round(headerGroup.getBoundingClientRect().bottom) + 'px';
+        dialog.style.setProperty('top', Math.round(headerGroup.getBoundingClientRect().bottom) + 'px', 'important');
       }
 
       function scheduleUpdateTop() {
