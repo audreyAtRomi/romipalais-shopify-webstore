@@ -264,6 +264,10 @@
     }
   }
 
+  .sorting-filter .facets__summary:focus-visible {
+    outline: none;
+  }
+
   .sorting-filter__option {
     cursor: pointer;
     display: grid;
@@ -274,13 +278,9 @@
     max-width: 16em;
     padding: var(--padding-2xs) calc(var(--drawer-padding) / 2) var(--padding-2xs) var(--padding-2xs);
 
-    &:hover {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
-    }
-
-    &:focus {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
+    &:hover .sorting-filter__label {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
     }
   }
 
