@@ -139,7 +139,7 @@ class StickyAddToCartComponent extends Component {
             }
           }
         },
-        { rootMargin: '0px 0px 100px 0px' }
+        { rootMargin: '0px 0px 32px 0px' }
       );
       this.#mainBottomObserver.observe(footer);
     }
