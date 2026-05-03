@@ -179,10 +179,10 @@
     bottom: 20px;
     left: 50%;
     opacity: 0;
-    transform: translateX(-50%) translateY(calc(100% + 40px));
+    transform: translate3d(-50%, calc(100% + 40px), 0);
     z-index: calc(var(--layer-sticky) - 1); /* Below sticky header */
-    display: block;
-    width: 600px;
+    will-change: transform, opacity;
+    width: min(80%, 600px);
     border-radius: calc(
       var(--style-border-radius-buttons-primary) + min(var(--padding-sm), var(--style-border-radius-buttons-primary))
     );
@@ -197,7 +197,7 @@
 
     @starting-style {
       opacity: 0;
-      transform: translateX(-50%) translateY(calc(100% + 40px));
+      transform: translate3d(-50%, calc(100% + 40px), 0);
     }
 
     &::before {
@@ -215,13 +215,13 @@
   }
 
   .sticky-add-to-cart__bar[data-stuck='true'] {
-    transform: translateX(-50%) translateY(0%);
+    transform: translate3d(-50%, 0, 0);
     opacity: 1;
   }
 
   sticky-add-to-cart:not([data-variant-available='true']) .sticky-add-to-cart__bar {
     opacity: 0;
-    transform: translateX(-50%) translateY(calc(100% + 40px));
+    transform: translate3d(-50%, calc(100% + 40px), 0);
     display: none;
   }
 
@@ -277,18 +277,8 @@
   /* Mobile adjustments */
   @media screen and (max-width: 749px) {
     .sticky-add-to-cart__bar {
-      bottom: 0;
-      width: 100%;
-      max-width: none;
-      border-radius: 0;
-
-      &::before {
-        --border: 1px;
-      }
-    }
-
-    .sticky-add-to-cart__bar .add-to-cart-text__content {
-      display: none;
+      bottom: 20px;
+      width: min(80%, 600px);
     }
 
     .sticky-add-to-cart__info[data-has-image='false'] {
@@ -301,22 +291,11 @@
 
     .sticky-add-to-cart__button {
       padding: var(--padding-lg);
+      width: auto;
     }
 
     .sticky-add-to-cart__price {
       font-size: var(--font-paragraph-small--size);
-    }
-
-    .sticky-add-to-cart__button {
-      width: var(--height-buy-buttons);
-    }
-
-    sticky-add-to-cart:not([data-variant-available='true']) .add-to-cart-text__content {
-      display: initial;
-    }
-
-    sticky-add-to-cart:not([data-variant-available='true']) .sticky-add-to-cart__button {
-      width: auto;
     }
   }
 
