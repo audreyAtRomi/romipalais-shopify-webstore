@@ -108,6 +108,10 @@ class StickyAddToCartComponent extends Component {
     const buyButtonsBlock = productForm.closest('.buy-buttons-block');
     if (!buyButtonsBlock) return;
 
+    // Use header height as top rootMargin so observer fires when buy buttons go behind the header
+    const headerGroup = document.querySelector('#header-group');
+    const headerHeight = headerGroup ? Math.round(headerGroup.getBoundingClientRect().height) : 0;
+
     // Observer for buy buttons visibility — show bar when scrolled past, hide when visible
     this.#buyButtonsIntersectionObserver = new IntersectionObserver((entries) => {
       const [entry] = entries;
@@ -115,14 +119,15 @@ class StickyAddToCartComponent extends Component {
 
       if (!entry.isIntersecting && !this.#isStuck) {
         const rect = entry.target.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top < 0) {
+        // Show only when scrolled UP past the header (not when element is below viewport)
+        if (rect.bottom < headerHeight) {
           this.#showStickyBar();
         }
       } else if (entry.isIntersecting && this.#isStuck) {
         this.#hiddenByBottom = false;
         this.#hideStickyBar();
       }
-    });
+    }, { rootMargin: `-${headerHeight}px 0px 0px 0px` });
 
     // Sentinel at the very bottom of the page — hide bar when bottom border is within 32px of viewport bottom
     this.#bottomSentinel = document.createElement('div');
@@ -139,7 +144,7 @@ class StickyAddToCartComponent extends Component {
           this.#hideStickyBar();
         } else if (!entry.isIntersecting && this.#hiddenByBottom) {
           const rect = buyButtonsBlock.getBoundingClientRect();
-          if (rect.bottom < 0 || rect.top < 0) {
+          if (rect.bottom < headerHeight) {
             this.#hiddenByBottom = false;
             this.#showStickyBar();
           }
