@@ -121,6 +121,29 @@ class StickyAddToCartComponent extends Component {
       }
     });
 
+    // Observer for page bottom — hide bar when within 100px of the bottom of the page
+    const footer = document.querySelector('footer') ?? document.querySelector('[class*="footer-group"]');
+    if (footer) {
+      this.#mainBottomObserver = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries;
+          if (!entry) return;
+          if (entry.isIntersecting && this.#isStuck) {
+            this.#hiddenByBottom = true;
+            this.#hideStickyBar();
+          } else if (!entry.isIntersecting && this.#hiddenByBottom) {
+            const rect = buyButtonsBlock.getBoundingClientRect();
+            if (rect.bottom < 0 || rect.top < 0) {
+              this.#hiddenByBottom = false;
+              this.#showStickyBar();
+            }
+          }
+        },
+        { rootMargin: '0px 0px 100px 0px' }
+      );
+      this.#mainBottomObserver.observe(footer);
+    }
+
     this.#buyButtonsIntersectionObserver.observe(buyButtonsBlock);
     this.#targetAddToCartButton = productForm.querySelector('[ref="addToCartButton"]');
   }
