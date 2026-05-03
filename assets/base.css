@@ -16,6 +16,7 @@ body {
   min-height: 100svh;
   font-variation-settings: 'slnt' 0;
   font-family: 'Sohne', sans-serif !important;
+  letter-spacing: 0.02em;
 }
 
 p {
