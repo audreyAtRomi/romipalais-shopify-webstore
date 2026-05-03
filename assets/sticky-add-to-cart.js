@@ -139,6 +139,7 @@ class StickyAddToCartComponent extends Component {
       (entries) => {
         const [entry] = entries;
         if (!entry) return;
+        if (window.innerWidth >= 750) return;
         if (entry.isIntersecting && this.#isStuck) {
           this.#hiddenByBottom = true;
           this.#hideStickyBar();
