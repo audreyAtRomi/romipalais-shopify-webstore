@@ -2,6 +2,18 @@
   box-sizing: border-box;
 }
 
+button,
+input,
+select,
+textarea {
+  letter-spacing: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  letter-spacing: inherit;
+}
+
 @font-face {
   font-family: 'Sohne';
   src: url('{{ 'soehne-buch.woff2' | asset_url }}') format('woff2'),
