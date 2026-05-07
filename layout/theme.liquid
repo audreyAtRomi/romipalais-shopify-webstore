@@ -302,17 +302,34 @@
 
         // Re-apply Nova currency conversion after variant update resets prices
         document.addEventListener('variant:update', function () {
+          // Hide prices immediately so the SGD flash is invisible
+          document.querySelectorAll('[ref="priceContainer"], .sticky-add-to-cart__price').forEach(function (el) {
+            el.style.opacity = '0';
+          });
+
           setTimeout(function () {
+            function showPrices() {
+              document.querySelectorAll('[ref="priceContainer"], .sticky-add-to-cart__price').forEach(function (el) {
+                el.style.opacity = '';
+              });
+            }
+
             var trigger = document.querySelector('.bacurr-choiceDesign');
-            if (!trigger) return;
+            if (!trigger) { showPrices(); return; }
+
             var currentCode = trigger.innerText.trim();
             var options = document.querySelectorAll('.currMovers');
+            var clicked = false;
             for (var i = 0; i < options.length; i++) {
               if (options[i].innerText.trim().indexOf(currentCode) !== -1) {
                 options[i].click();
+                clicked = true;
                 break;
               }
             }
+
+            // Restore prices after Nova finishes converting (or immediately if nothing to click)
+            setTimeout(showPrices, clicked ? 50 : 0);
           }, 150);
         });
       })();
