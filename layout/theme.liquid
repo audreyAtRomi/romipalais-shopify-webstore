@@ -131,6 +131,14 @@
         border-bottom: 1.5px solid #016FB6 !important;
         transform: rotate(45deg) !important;
         margin-bottom: 2px !important;
+        transition: transform 0.3s ease !important;
+      }
+
+      /* Rotate chevron upward when dropdown is open */
+      .bacurr-choiceDesign.active .countryContainer::after,
+      .bacurr-cur-block.active .countryContainer::after {
+        transform: rotate(-135deg) !important;
+        margin-bottom: -2px !important;
       }
 
       /* Remove dividers between options */
