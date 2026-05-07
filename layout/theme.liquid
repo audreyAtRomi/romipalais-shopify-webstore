@@ -273,33 +273,26 @@
           return true;
         }
 
-        // Keep watching persistently — Nova re-appends on resize
-        var headerObserver = new MutationObserver(function () {
-          moveNovaToHeader();
-        });
-        headerObserver.observe(document.body, { childList: true, subtree: true });
-        moveNovaToHeader();
-
-        // Override Nova's inline --bacurrSelect-color: #333 !important
         function fixNovaSelectColor() {
           var el = document.querySelector('.bacurr-dropdownChoices');
-          if (!el) return false;
+          if (!el) return;
           el.style.setProperty('--bacurrSelect-color', '#016FB6', 'important');
-          // Watch for Nova re-setting it
+          // Watch for Nova re-setting the style attribute on this element
           new MutationObserver(function () {
             if (el.style.getPropertyValue('--bacurrSelect-color') !== '#016FB6') {
               el.style.setProperty('--bacurrSelect-color', '#016FB6', 'important');
             }
           }).observe(el, { attributes: true, attributeFilter: ['style'] });
-          return true;
         }
 
-        if (!fixNovaSelectColor()) {
-          var colorObserver = new MutationObserver(function () {
-            if (fixNovaSelectColor()) colorObserver.disconnect();
-          });
-          colorObserver.observe(document.body, { childList: true, subtree: true });
-        }
+        // Keep watching persistently — Nova re-appends and re-styles on resize
+        var headerObserver = new MutationObserver(function () {
+          moveNovaToHeader();
+          fixNovaSelectColor();
+        });
+        headerObserver.observe(document.body, { childList: true, subtree: true });
+        moveNovaToHeader();
+        fixNovaSelectColor();
       })();
     </script>
   </body>
