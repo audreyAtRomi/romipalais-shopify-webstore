@@ -162,7 +162,12 @@
       .baDropdownStyle .bacurr-choiceDesign:after {
         display: none !important;
       }
-    </style>
+
+      /* Hide the built-in Shopify currency/language selector in the header */
+      dropdown-localization-component {
+        display: none !important;
+      }
+</style>
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
