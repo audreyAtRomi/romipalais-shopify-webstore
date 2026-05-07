@@ -532,7 +532,6 @@
   .cart-items__details {
     grid-area: details;
     color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
-    min-width: 200px;
   }
 
   .cart-items__details > * + *,
@@ -692,7 +691,7 @@
     .cart-items__table-row {
       --cart-item-price-width: 6rem;
 
-      grid-template-columns: 7.5rem 1fr 1fr minmax(var(--cart-item-price-width), auto);
+      grid-template-columns: 7.5rem minmax(200px, 1fr) 1fr minmax(var(--cart-item-price-width), auto);
       grid-template-rows: min-content 1fr;
       grid-template-areas:
         'media details quantity price'
