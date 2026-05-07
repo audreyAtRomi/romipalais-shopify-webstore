@@ -98,9 +98,28 @@
         text-underline-offset: 4px !important;
       }
 
-      /* Hide country flags */
+      /* Hide flag image but keep container for our chevron */
       .countryContainer {
+        display: inline-flex !important;
+        align-items: center !important;
+      }
+
+      .countryContainer img {
         display: none !important;
+      }
+
+      /* Our chevron in countryContainer */
+      .countryContainer::after {
+        content: '' !important;
+        display: inline-block !important;
+        width: 5px !important;
+        height: 5px !important;
+        border-right: 1.5px solid #016FB6 !important;
+        border-bottom: 1.5px solid #016FB6 !important;
+        transform: rotate(45deg) !important;
+        margin-left: 5px !important;
+        margin-bottom: 2px !important;
+        vertical-align: middle !important;
       }
 
       /* Remove dividers between options */
@@ -115,20 +134,9 @@
         --bacurrSelect-color: #016FB6 !important;
       }
 
-      /* Replace Nova's arrow with our theme chevron */
+      /* Hide Nova's original arrow */
       .baDropdownStyle .bacurr-choiceDesign:after {
-        content: '' !important;
-        display: inline-block !important;
-        width: 5px !important;
-        height: 5px !important;
-        border-right: 1.5px solid #016FB6 !important;
-        border-bottom: 1.5px solid #016FB6 !important;
-        transform: rotate(45deg) !important;
-        margin-left: 5px !important;
-        margin-bottom: 2px !important;
-        vertical-align: middle !important;
-        background: none !important;
-        background-image: none !important;
+        display: none !important;
       }
     </style>
   </head>
