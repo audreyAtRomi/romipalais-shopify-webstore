@@ -293,6 +293,22 @@
         headerObserver.observe(document.body, { childList: true, subtree: true });
         moveNovaToHeader();
         fixNovaSelectColor();
+
+        // Re-apply Nova currency conversion after variant update resets prices
+        document.addEventListener('variant:update', function () {
+          setTimeout(function () {
+            var trigger = document.querySelector('.bacurr-choiceDesign');
+            if (!trigger) return;
+            var currentCode = trigger.innerText.trim();
+            var options = document.querySelectorAll('.currMovers');
+            for (var i = 0; i < options.length; i++) {
+              if (options[i].innerText.trim().indexOf(currentCode) !== -1) {
+                options[i].click();
+                break;
+              }
+            }
+          }, 150);
+        });
       })();
     </script>
   </body>
