@@ -37,11 +37,65 @@
 
     {{ content_for_header }}
     <style>
-      .bacurr-cur-block,
+      /* Nova widget — reset floating bar positioning, make inline */
+      .bacurr-cur-block {
+        position: relative !important;
+        bottom: auto !important;
+        right: auto !important;
+        top: auto !important;
+        left: auto !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        font-family: 'Sohne', sans-serif !important;
+        font-size: 12px !important;
+        letter-spacing: 0.02em !important;
+        color: var(--color-foreground) !important;
+        cursor: pointer;
+      }
+
       .bacurr-cur-block * {
         font-family: 'Sohne', sans-serif !important;
-        letter-spacing: 0.02em !important;
         font-size: 12px !important;
+        letter-spacing: 0.02em !important;
+      }
+
+      /* Nova dropdown — match existing currency dropdown style */
+      .bacurr-dropdown-choices {
+        position: absolute !important;
+        top: calc(100% + 10px) !important;
+        right: 0 !important;
+        left: auto !important;
+        bottom: auto !important;
+        background-color: var(--color-background) !important;
+        border: 1px solid rgb(var(--color-foreground-rgb) / 0.2) !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 8px !important;
+        margin: 0 !important;
+        z-index: 200 !important;
+        min-width: 120px !important;
+      }
+
+      /* Nova option items — underline on hover, no background */
+      .currMovers {
+        background-color: transparent !important;
+        padding: 4px 8px !important;
+        display: block !important;
+      }
+
+      .currMovers:hover {
+        background-color: transparent !important;
+        text-decoration: underline !important;
+        text-underline-offset: 4px !important;
       }
     </style>
   </head>
@@ -140,5 +194,25 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+
+    <script>
+      (function () {
+        function moveNovaToHeader() {
+          var nova = document.querySelector('.bacurr-cur-block');
+          var currencyBtn = document.querySelector('.dropdown-localization');
+          if (!nova || !currencyBtn) return false;
+          currencyBtn.style.display = 'none';
+          currencyBtn.parentNode.insertBefore(nova, currencyBtn);
+          return true;
+        }
+
+        if (!moveNovaToHeader()) {
+          var observer = new MutationObserver(function () {
+            if (moveNovaToHeader()) observer.disconnect();
+          });
+          observer.observe(document.body, { childList: true, subtree: true });
+        }
+      })();
+    </script>
   </body>
 </html>
