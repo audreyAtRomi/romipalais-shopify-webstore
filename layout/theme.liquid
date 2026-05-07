@@ -266,16 +266,19 @@
           var currencyBtn = document.querySelector('.dropdown-localization');
           if (!nova || !currencyBtn) return false;
           currencyBtn.style.display = 'none';
-          currencyBtn.parentNode.insertBefore(nova, currencyBtn);
+          // Only move if not already in the right place
+          if (nova.previousElementSibling !== currencyBtn && nova.nextElementSibling !== currencyBtn) {
+            currencyBtn.parentNode.insertBefore(nova, currencyBtn);
+          }
           return true;
         }
 
-        if (!moveNovaToHeader()) {
-          var observer = new MutationObserver(function () {
-            if (moveNovaToHeader()) observer.disconnect();
-          });
-          observer.observe(document.body, { childList: true, subtree: true });
-        }
+        // Keep watching persistently — Nova re-appends on resize
+        var headerObserver = new MutationObserver(function () {
+          moveNovaToHeader();
+        });
+        headerObserver.observe(document.body, { childList: true, subtree: true });
+        moveNovaToHeader();
 
         // Override Nova's inline --bacurrSelect-color: #333 !important
         function fixNovaSelectColor() {
