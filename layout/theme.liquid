@@ -98,18 +98,31 @@
         text-underline-offset: 4px !important;
       }
 
-      /* Hide flag image but keep container for our chevron */
-      .countryContainer {
+      /* Hide countryContainer in dropdown options, keep only in trigger */
+      .currMovers .countryContainer {
+        display: none !important;
+      }
+
+      /* Trigger button — flex so we can push chevron to the right */
+      .bacurr-choiceDesign {
         display: inline-flex !important;
         align-items: center !important;
       }
 
-      .countryContainer img {
+      /* Move trigger's countryContainer to the right of the currency text */
+      .bacurr-choiceDesign .countryContainer {
+        order: 2 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        margin-left: 5px !important;
+      }
+
+      .bacurr-choiceDesign .countryContainer img {
         display: none !important;
       }
 
-      /* Our chevron in countryContainer */
-      .countryContainer::after {
+      /* Our chevron — only on trigger's countryContainer */
+      .bacurr-choiceDesign .countryContainer::after {
         content: '' !important;
         display: inline-block !important;
         width: 5px !important;
@@ -117,9 +130,7 @@
         border-right: 1.5px solid #016FB6 !important;
         border-bottom: 1.5px solid #016FB6 !important;
         transform: rotate(45deg) !important;
-        margin-left: 5px !important;
         margin-bottom: 2px !important;
-        vertical-align: middle !important;
       }
 
       /* Remove dividers between options */
