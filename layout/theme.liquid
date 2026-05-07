@@ -109,6 +109,28 @@
         border-top: none !important;
         border-bottom: none !important;
       }
+
+      /* Blue color for selected currency text and arrow */
+      .bacurr-cur-block,
+      .bacurr-cur-block .bacurr-choiceDesign {
+        color: #016FB6 !important;
+      }
+
+      /* Replace Nova's arrow with our theme chevron */
+      .baDropdownStyle .bacurr-choiceDesign:after {
+        content: '' !important;
+        display: inline-block !important;
+        width: 5px !important;
+        height: 5px !important;
+        border-right: 1.5px solid #016FB6 !important;
+        border-bottom: 1.5px solid #016FB6 !important;
+        transform: rotate(45deg) !important;
+        margin-left: 5px !important;
+        margin-bottom: 2px !important;
+        vertical-align: middle !important;
+        background: none !important;
+        background-image: none !important;
+      }
     </style>
   </head>
 
