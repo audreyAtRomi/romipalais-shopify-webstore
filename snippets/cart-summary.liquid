@@ -284,8 +284,16 @@
     </div>
   {% endif %}
 </div>
+<p class="cart__currency-note">SGD will be displayed on the next page. You will be able to choose your preferred currency to pay at when entering your card details.</p>
 
 {% stylesheet %}
+  .cart__currency-note {
+    font-size: 12px;
+    color: var(--color-foreground-muted);
+    margin: 8px 0 0;
+    line-height: 1.5;
+  }
+
   .cart-actions {
     display: flex;
     flex-direction: column;
