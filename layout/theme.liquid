@@ -304,27 +304,38 @@
         // Patch Nova's trigger label to show the Shopify market currency without
         // triggering Nova's conversion (prices are already correct via Shopify Markets).
         var marketCurrency = {{ localization.market.currency.iso_code | json }};
+        var _triggerWatcher = null;
+        var _watchedTrigger = null;
         function patchNovaCurrencyLabel() {
           if (!marketCurrency) return;
           var trigger = document.querySelector('.bacurr-choiceDesign');
           if (!trigger) return;
-          // Nova puts the currency code as the first text node inside the trigger
-          for (var i = 0; i < trigger.childNodes.length; i++) {
-            var node = trigger.childNodes[i];
-            if (node.nodeType === 3 && node.textContent.trim()) {
-              // Only write if wrong — avoids unnecessary characterData mutations
-              if (node.textContent.trim() !== marketCurrency) {
-                node.textContent = marketCurrency + ' ';
+
+          function applyPatch() {
+            for (var i = 0; i < trigger.childNodes.length; i++) {
+              var node = trigger.childNodes[i];
+              if (node.nodeType === 3 && node.textContent.trim()) {
+                // Guard prevents re-triggering the characterData observer in a loop
+                if (node.textContent.trim() !== marketCurrency) {
+                  node.textContent = marketCurrency + ' ';
+                }
+                break;
               }
-              break;
             }
+          }
+
+          applyPatch();
+
+          // Attach a characterData observer to the trigger so any text reset
+          // by Nova's async init is caught and immediately re-patched.
+          if (trigger !== _watchedTrigger) {
+            if (_triggerWatcher) _triggerWatcher.disconnect();
+            _watchedTrigger = trigger;
+            _triggerWatcher = new MutationObserver(applyPatch);
+            _triggerWatcher.observe(trigger, { childList: true, characterData: true, subtree: true });
           }
         }
         patchNovaCurrencyLabel();
-        // Nova resets its trigger text asynchronously via characterData mutations
-        // which childList observers don't catch. Poll during the init window to override.
-        var _novaPatchInterval = setInterval(patchNovaCurrencyLabel, 100);
-        setTimeout(function () { clearInterval(_novaPatchInterval); }, 8000);
 
         // Re-apply Nova currency conversion after variant update resets prices.
         // This listener is on document, so it fires AFTER all section-level listeners
