@@ -83,6 +83,20 @@
     margin-block-start: var(--spacing--size);
   }
 
+  /* Max 3 rows per column — overflow wraps into a new column */
+  .menu nav ul {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    row-gap: var(--spacing--size);
+    column-gap: calc(var(--spacing--size) * 3);
+  }
+
+  .menu nav ul .menu__item + .menu__item {
+    margin-block-start: 0;
+  }
+
   .menu .menu__heading--empty {
     display: none;
   }
