@@ -303,7 +303,7 @@
 
         // Patch Nova's trigger label to show the Shopify market currency without
         // triggering Nova's conversion (prices are already correct via Shopify Markets).
-        var marketCurrency = {{ cart.currency.iso_code | json }};
+        var marketCurrency = {{ localization.country.currency.iso_code | json }};
         var _triggerWatcher = null;
         var _watchedTrigger = null;
         function patchNovaCurrencyLabel() {
