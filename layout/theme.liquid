@@ -295,10 +295,29 @@
         var footerObserver = new MutationObserver(function () {
           moveNovaToFooter();
           fixNovaSelectColor();
+          patchNovaCurrencyLabel();
         });
         footerObserver.observe(document.body, { childList: true, subtree: true });
         moveNovaToFooter();
         fixNovaSelectColor();
+
+        // Patch Nova's trigger label to show the Shopify market currency without
+        // triggering Nova's conversion (prices are already correct via Shopify Markets).
+        var marketCurrency = {{ localization.market.currency.iso_code | json }};
+        function patchNovaCurrencyLabel() {
+          if (!marketCurrency) return;
+          var trigger = document.querySelector('.bacurr-choiceDesign');
+          if (!trigger) return;
+          // Nova puts the currency code as the first text node inside the trigger
+          for (var i = 0; i < trigger.childNodes.length; i++) {
+            var node = trigger.childNodes[i];
+            if (node.nodeType === 3 && node.textContent.trim()) {
+              node.textContent = marketCurrency + ' ';
+              break;
+            }
+          }
+        }
+        patchNovaCurrencyLabel();
 
         // Re-apply Nova currency conversion after variant update resets prices.
         // This listener is on document, so it fires AFTER all section-level listeners
