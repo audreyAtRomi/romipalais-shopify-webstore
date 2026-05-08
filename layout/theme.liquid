@@ -370,6 +370,33 @@
         }
         selectNovaCurrency();
 
+        // Re-apply Nova conversion after product recommendations load.
+        // Recommendations are fetched via AJAX and inserted via morphSection().
+        // The component sets data-recommendations-performed="true" just before
+        // morphSection runs (synchronously), so by the time this observer fires
+        // the new SGD price HTML is already in the DOM — click Nova to convert it.
+        function reapplyNovaCurrency() {
+          if (!marketCurrency) return;
+          var opts = document.querySelectorAll('.currMovers');
+          for (var i = 0; i < opts.length; i++) {
+            if (opts[i].innerText.trim().indexOf(marketCurrency) !== -1) {
+              opts[i].click();
+              break;
+            }
+          }
+        }
+        var _recsEl = document.querySelector('product-recommendations');
+        if (_recsEl) {
+          new MutationObserver(function (mutations) {
+            for (var i = 0; i < mutations.length; i++) {
+              if (mutations[i].attributeName === 'data-recommendations-performed') {
+                reapplyNovaCurrency();
+                break;
+              }
+            }
+          }).observe(_recsEl, { attributes: true, attributeFilter: ['data-recommendations-performed'] });
+        }
+
         // Re-apply Nova currency conversion after variant update resets prices.
         // This listener is on document, so it fires AFTER all section-level listeners
         // (product-price replaceWith, sticky-add-to-cart morph) have already run and
