@@ -301,9 +301,24 @@
         moveNovaToFooter();
         fixNovaSelectColor();
 
-        // Patch Nova's trigger label to show the Shopify market currency without
-        // triggering Nova's conversion (prices are already correct via Shopify Markets).
-        var marketCurrency = {{ localization.country.currency.iso_code | json }};
+        // Derive the visitor's real currency from their detected country code.
+        // localization.country.currency.iso_code reflects the Shopify Markets catalog
+        // setting (SGD for all markets here), so we map the country code instead.
+        var _countryCode = {{ localization.country.iso_code | json }};
+        var _countryCurrency = {
+          'US':'USD','CA':'CAD','GB':'GBP','AU':'AUD','NZ':'NZD',
+          'JP':'JPY','CN':'CNY','HK':'HKD','TW':'TWD','KR':'KRW',
+          'IN':'INR','ID':'IDR','MY':'MYR','TH':'THB','VN':'VND',
+          'PH':'PHP','SG':'SGD','AE':'AED','SA':'SAR','QA':'QAR',
+          'ZA':'ZAR','BR':'BRL','MX':'MXN','CH':'CHF','SE':'SEK',
+          'NO':'NOK','DK':'DKK','PL':'PLN','CZ':'CZK','HU':'HUF',
+          'RU':'RUB','TR':'TRY','IL':'ILS','NG':'NGN','EG':'EGP',
+          'FR':'EUR','DE':'EUR','IT':'EUR','ES':'EUR','NL':'EUR',
+          'BE':'EUR','AT':'EUR','PT':'EUR','FI':'EUR','IE':'EUR',
+          'GR':'EUR','LU':'EUR','SK':'EUR','SI':'EUR','EE':'EUR',
+          'LV':'EUR','LT':'EUR','MT':'EUR','CY':'EUR'
+        };
+        var marketCurrency = _countryCurrency[_countryCode] || 'SGD';
         var _triggerWatcher = null;
         var _watchedTrigger = null;
         function patchNovaCurrencyLabel() {
