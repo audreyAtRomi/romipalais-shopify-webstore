@@ -112,7 +112,13 @@
       /* Once our JS sets data-market-currency, hide Nova's internal text and
          show our label via ::before — Nova cannot reset an HTML attribute */
       .bacurr-choiceDesign[data-market-currency] {
-        font-size: 0 !important;
+        font-size: 0 !important; /* hides bare text nodes */
+      }
+
+      /* Hide Nova's currency span(s) — font-size:0 on parent doesn't override
+         Nova's own font-size on child elements */
+      .bacurr-choiceDesign[data-market-currency] > :not(.countryContainer) {
+        display: none !important;
       }
 
       .bacurr-choiceDesign[data-market-currency]::before {
@@ -316,6 +322,7 @@
           moveNovaToFooter();
           fixNovaSelectColor();
           patchNovaCurrencyLabel();
+          selectNovaCurrency();
         });
         footerObserver.observe(document.body, { childList: true, subtree: true });
         moveNovaToFooter();
@@ -345,6 +352,23 @@
           if (trigger) trigger.setAttribute('data-market-currency', marketCurrency);
         }
         patchNovaCurrencyLabel();
+
+        // Select the correct currency in Nova once its options are rendered,
+        // so prices convert to the visitor's currency (not Nova's SGD default).
+        var _novaInitDone = false;
+        function selectNovaCurrency() {
+          if (_novaInitDone || !marketCurrency) return;
+          var options = document.querySelectorAll('.currMovers');
+          if (!options.length) return;
+          for (var i = 0; i < options.length; i++) {
+            if (options[i].innerText.trim().indexOf(marketCurrency) !== -1) {
+              _novaInitDone = true;
+              options[i].click();
+              break;
+            }
+          }
+        }
+        selectNovaCurrency();
 
         // Re-apply Nova currency conversion after variant update resets prices.
         // This listener is on document, so it fires AFTER all section-level listeners
