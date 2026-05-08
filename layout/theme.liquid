@@ -279,13 +279,11 @@
           return true;
         }
 
-        var colorWatcherActive = false;
         function fixNovaSelectColor() {
-          if (colorWatcherActive) return;
           var el = document.querySelector('.bacurr-dropdownChoices');
           if (!el) return;
-          colorWatcherActive = true;
           el.style.setProperty('--bacurrSelect-color', '#016FB6', 'important');
+          // Watch for Nova re-setting the style attribute on this element
           new MutationObserver(function () {
             if (el.style.getPropertyValue('--bacurrSelect-color') !== '#016FB6') {
               el.style.setProperty('--bacurrSelect-color', '#016FB6', 'important');
@@ -293,43 +291,14 @@
           }).observe(el, { attributes: true, attributeFilter: ['style'] });
         }
 
-        // Auto-select the currency that matches the customer's Shopify market
-        var marketCurrency = {{ localization.market.currency.iso_code | json }};
-        var marketCurrencySelected = false;
-        function selectMarketCurrency() {
-          if (marketCurrencySelected || !marketCurrency) return;
-          var options = document.querySelectorAll('.currMovers');
-          if (!options.length) return;
-          for (var i = 0; i < options.length; i++) {
-            if (options[i].innerText.trim().toUpperCase().indexOf(marketCurrency) !== -1) {
-              options[i].click();
-              marketCurrencySelected = true;
-              break;
-            }
-          }
-        }
-
-        // Watch for Nova being added to body (init and resize)
-        var footerObserver = new MutationObserver(function (mutations) {
-          mutations.forEach(function (mutation) {
-            mutation.addedNodes.forEach(function (node) {
-              if (node.nodeType === 1 && node.classList && node.classList.contains('bacurr-cur-block')) {
-                moveNovaToFooter();
-                fixNovaSelectColor();
-                selectMarketCurrency();
-              }
-            });
-          });
-        });
-        footerObserver.observe(document.body, { childList: true });
-
-        // Try immediately in case Nova is already in the DOM
-        var existingNova = document.querySelector('.bacurr-cur-block');
-        if (existingNova) {
+        // Keep watching persistently — Nova re-appends and re-styles on resize
+        var footerObserver = new MutationObserver(function () {
           moveNovaToFooter();
-        }
+          fixNovaSelectColor();
+        });
+        footerObserver.observe(document.body, { childList: true, subtree: true });
+        moveNovaToFooter();
         fixNovaSelectColor();
-        selectMarketCurrency();
 
         // Re-apply Nova currency conversion after variant update resets prices.
         // This listener is on document, so it fires AFTER all section-level listeners
