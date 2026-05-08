@@ -58,7 +58,7 @@
               "type": "group",
               "name": "Navigation",
               "settings": {
-                "content_direction": "row",
+                "content_direction": "column",
                 "vertical_on_mobile": true,
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "flex-start",
@@ -94,6 +94,15 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "footer_policy_list_UVWapt": {
+                  "type": "footer-policy-list",
+                  "name": "t:names.policy_list",
+                  "settings": {
+                    "font_size": "0.75rem",
+                    "case": "none"
+                  },
+                  "blocks": {}
+                },
                 "menu_zf63TX": {
                   "type": "menu",
                   "name": "t:names.menu",
@@ -141,7 +150,6 @@
                 "menu_HFzgCj": {
                   "type": "menu",
                   "name": "t:names.menu",
-                  "disabled": true,
                   "settings": {
                     "menu": "",
                     "heading": "Connect",
@@ -162,6 +170,7 @@
                 }
               },
               "block_order": [
+                "footer_policy_list_UVWapt",
                 "menu_zf63TX",
                 "menu_H4cHLN",
                 "menu_HFzgCj"
@@ -271,6 +280,7 @@
         "footer_policy_list_qhUnh6": {
           "type": "footer-policy-list",
           "name": "t:names.policy_list",
+          "disabled": true,
           "settings": {
             "font_size": "0.75rem",
             "case": "none"
