@@ -1,0 +1,32 @@
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section page-width-content color-{{ section.settings.color_scheme }}" style="padding-block-start: 40px; padding-block-end: 80px;">
+  <div
+    class="layout-panel-flex layout-panel-flex--column section-content-wrapper mobile-column"
+    style="gap: 32px;"
+  >
+    <div
+      class="text-block h2 text-block--align-center"
+      style="--width: 100%; --text-align: center;"
+    >
+      <h1>{{ policy.title }}</h1>
+    </div>
+    <rte-formatter class="rte text-block paragraph">
+      {{ policy.body }}
+    </rte-formatter>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Policy",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}
