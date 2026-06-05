@@ -414,6 +414,17 @@ class LocalizationFormComponent extends Component {
  * @extends {Component<DropdownRefs>}
  */
 class DropdownLocalizationComponent extends Component {
+  connectedCallback() {
+    super.connectedCallback();
+    this.#syncCurrencyDisplay();
+    window.addEventListener('storage', this.#onStorageChange);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('storage', this.#onStorageChange);
+  }
+
   get isHidden() {
     return this.refs.panel.hasAttribute('hidden');
   }
@@ -455,6 +466,22 @@ class DropdownLocalizationComponent extends Component {
     this.refs.button?.setAttribute('aria-expanded', 'false');
     this.refs.panel.setAttribute('hidden', '');
     this.refs.localizationForm?.resetForm();
+
+    // Wait for the converter to write the new value, then sync the button label.
+    setTimeout(this.#syncCurrencyDisplay, 50);
+  };
+
+  #syncCurrencyDisplay = () => {
+    const currency = localStorage.getItem('bacurr_user_cur')?.replace(/"/g, '');
+    if (!currency) return;
+    const codeEl = this.refs.button?.querySelector('.currency-code');
+    if (codeEl && codeEl.textContent?.trim() !== currency) {
+      codeEl.textContent = currency;
+    }
+  };
+
+  #onStorageChange = (event) => {
+    if (event.key === 'bacurr_user_cur') this.#syncCurrencyDisplay();
   };
 
   /**
