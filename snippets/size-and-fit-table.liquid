@@ -1,0 +1,36 @@
+{%- doc -%}
+  Renders the product's `custom.size_and_fit` CSV metafield as an HTML table.
+  First CSV row is treated as the header.
+
+  @param {object} product - The product object
+{%- enddoc -%}
+
+{%- assign csv = product.metafields.custom.size_and_fit.value | default: '' | strip -%}
+
+{%- if csv != blank -%}
+  {%- assign rows = csv | newline_to_br | split: '<br />' -%}
+  <table>
+    {%- for row in rows -%}
+      {%- assign trimmed = row | strip -%}
+      {%- if trimmed == blank -%}{%- continue -%}{%- endif -%}
+      {%- assign cells = trimmed | split: ',' -%}
+      {%- if forloop.first -%}
+        <thead>
+          <tr>
+            {%- for cell in cells -%}
+              <th>{{ cell | strip }}</th>
+            {%- endfor -%}
+          </tr>
+        </thead>
+        <tbody>
+      {%- else -%}
+        <tr>
+          {%- for cell in cells -%}
+            <td>{{ cell | strip }}</td>
+          {%- endfor -%}
+        </tr>
+      {%- endif -%}
+    {%- endfor -%}
+    </tbody>
+  </table>
+{%- endif -%}
