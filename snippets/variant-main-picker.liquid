@@ -202,6 +202,8 @@
                     <span class="size-dropdown__option-size">{{ product_option_value | escape }}</span>
                     {%- if product_option_value.available == false -%}
                       <span class="size-dropdown__option-status">Sold Out</span>
+                    {%- elsif product_option_value.variant.inventory_management == 'shopify' and product_option_value.variant.inventory_quantity == 1 -%}
+                      <span class="size-dropdown__option-status size-dropdown__option-status--last-piece">Last piece</span>
                     {%- endif -%}
                   </button>
                 {%- endfor -%}
