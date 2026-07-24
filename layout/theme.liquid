@@ -219,7 +219,85 @@
         margin-bottom: 24px;
       }
 </style>
-    <script>console.log('[deploy-check] github->shopify sync OK — commit marker 2026-07-23');</script>
+    <script>
+      (function () {
+        var SUMMARY_MATCH = /size\s*(?:&|&amp;|and)\s*fit/i;
+
+        function extractCsv(el) {
+          var text = '';
+          el.childNodes.forEach(function (node) {
+            if (node.nodeName === 'BR') text += '\n';
+            else text += node.textContent || '';
+          });
+          return text;
+        }
+
+        function buildTable(csv) {
+          var rows = csv.split(/\r?\n/).map(function (r) { return r.trim(); }).filter(Boolean);
+          if (rows.length < 2) return null;
+          var parseRow = function (r) { return r.split(',').map(function (c) { return c.trim(); }); };
+          var headers = parseRow(rows[0]);
+          if (headers.length < 2) return null;
+
+          var table = document.createElement('table');
+          table.className = 'size-and-fit-table';
+          var thead = document.createElement('thead');
+          var headRow = document.createElement('tr');
+          headers.forEach(function (h) {
+            var th = document.createElement('th');
+            th.textContent = h;
+            headRow.appendChild(th);
+          });
+          thead.appendChild(headRow);
+          table.appendChild(thead);
+
+          var tbody = document.createElement('tbody');
+          for (var i = 1; i < rows.length; i++) {
+            var row = document.createElement('tr');
+            parseRow(rows[i]).forEach(function (c) {
+              var td = document.createElement('td');
+              td.textContent = c;
+              row.appendChild(td);
+            });
+            tbody.appendChild(row);
+          }
+          table.appendChild(tbody);
+          return table;
+        }
+
+        function transform(root) {
+          (root || document).querySelectorAll('details').forEach(function (details) {
+            var summary = details.querySelector('summary');
+            if (!summary || !SUMMARY_MATCH.test(summary.textContent)) return;
+            details.querySelectorAll('.metafield-multi_line_text_field').forEach(function (el) {
+              if (el.dataset.csvTransformed) return;
+              var csv = extractCsv(el);
+              var table = buildTable(csv);
+              if (!table) return;
+              el.dataset.csvTransformed = '1';
+              var parent = el.parentElement;
+              if (parent && parent.tagName === 'P' && parent.children.length === 1) {
+                parent.replaceWith(table);
+              } else {
+                el.replaceWith(table);
+              }
+            });
+          });
+        }
+
+        function init() {
+          transform();
+          var observer = new MutationObserver(function () { transform(); });
+          observer.observe(document.body, { childList: true, subtree: true });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
+    </script>
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
