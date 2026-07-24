@@ -219,9 +219,9 @@
         margin-bottom: 24px;
       }
 
-      .size-and-fit-table th:last-child,
-      .size-and-fit-table td:last-child {
-        min-width: 200px;
+      .size-and-fit-table {
+        width: 100%;
+        table-layout: fixed;
       }
 </style>
     <script>
@@ -246,6 +246,18 @@
 
           var table = document.createElement('table');
           table.className = 'size-and-fit-table';
+
+          // Last column takes 2 units, others take 1 unit each.
+          var units = headers.length + 1;
+          var colgroup = document.createElement('colgroup');
+          headers.forEach(function (_, i) {
+            var col = document.createElement('col');
+            var share = (i === headers.length - 1 ? 2 : 1) / units;
+            col.style.width = (share * 100).toFixed(4) + '%';
+            colgroup.appendChild(col);
+          });
+          table.appendChild(colgroup);
+
           var thead = document.createElement('thead');
           var headRow = document.createElement('tr');
           headers.forEach(function (h) {
