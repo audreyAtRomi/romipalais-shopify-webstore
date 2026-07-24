@@ -296,7 +296,7 @@
             details.querySelectorAll('.metafield-multi_line_text_field').forEach(function (el) {
               if (el.dataset.csvTransformed) return;
               var csv = extractCsv(el);
-              if (csv.indexOf('"') === -1) return;
+              if ((csv.match(/"/g) || []).length < 2) return;
               var table = buildTable(csv);
               if (!table) return;
               el.dataset.csvTransformed = '1';
