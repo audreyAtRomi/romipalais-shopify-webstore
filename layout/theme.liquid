@@ -223,6 +223,13 @@
         width: 100%;
         table-layout: fixed;
       }
+
+      .text-block:has(> .size-and-fit-table),
+      .text-block:has(> .size-and-fit-table) .size-and-fit-table {
+        max-width: none;
+        --max-width: none;
+        width: 100%;
+      }
 </style>
     <script>
       (function () {
