@@ -231,8 +231,8 @@
         width: 100%;
       }
 </style>
-    {%- if template.name == 'product' and product.metafields.custom.size_chart -%}
-      <script type="application/json" id="size-chart-data">{{ product.metafields.custom.size_chart.value | json }}</script>
+    {%- if template.name == 'product' and product.metafields.custom.real_life_references -%}
+      <script type="application/json" id="size-chart-data">{{ product.metafields.custom.real_life_references.value | json }}</script>
     {%- endif -%}
     <script>
       (function () {
