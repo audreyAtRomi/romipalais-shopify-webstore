@@ -231,24 +231,16 @@
         width: 100%;
       }
 </style>
+    {%- if template.name == 'product' and product.metafields.custom.size_chart -%}
+      <script type="application/json" id="size-chart-data">{{ product.metafields.custom.size_chart.value | json }}</script>
+    {%- endif -%}
     <script>
       (function () {
         var SUMMARY_MATCH = /size\s*(?:&|&amp;|and)\s*fit/i;
 
-        function extractCsv(el) {
-          var text = '';
-          el.childNodes.forEach(function (node) {
-            if (node.nodeName === 'BR') text += '\n';
-            else text += node.textContent || '';
-          });
-          return text;
-        }
-
-        function buildTable(csv) {
-          var rows = csv.split(/\r?\n/).map(function (r) { return r.trim(); }).filter(Boolean);
-          if (rows.length < 2) return null;
-          var parseRow = function (r) { return r.split(',').map(function (c) { return c.trim(); }); };
-          var headers = parseRow(rows[0]);
+        function buildTable(data) {
+          if (!data || !Array.isArray(data.headers) || !Array.isArray(data.rows)) return null;
+          var headers = data.headers;
           if (headers.length < 2) return null;
 
           var table = document.createElement('table');
@@ -276,37 +268,37 @@
           table.appendChild(thead);
 
           var tbody = document.createElement('tbody');
-          for (var i = 1; i < rows.length; i++) {
-            var row = document.createElement('tr');
-            parseRow(rows[i]).forEach(function (c) {
+          data.rows.forEach(function (row) {
+            var tr = document.createElement('tr');
+            (Array.isArray(row) ? row : []).forEach(function (c) {
               var td = document.createElement('td');
-              td.textContent = c;
-              row.appendChild(td);
+              td.textContent = c == null ? '' : String(c);
+              tr.appendChild(td);
             });
-            tbody.appendChild(row);
-          }
+            tbody.appendChild(tr);
+          });
           table.appendChild(tbody);
           return table;
         }
 
+        function readData() {
+          var el = document.getElementById('size-chart-data');
+          if (!el) return null;
+          try { return JSON.parse(el.textContent); } catch (e) { return null; }
+        }
+
         function transform(root) {
+          var data = readData();
+          if (!data) return;
           (root || document).querySelectorAll('details').forEach(function (details) {
+            if (details.dataset.sizeChartInjected) return;
             var summary = details.querySelector('summary');
             if (!summary || !SUMMARY_MATCH.test(summary.textContent)) return;
-            details.querySelectorAll('.metafield-multi_line_text_field').forEach(function (el) {
-              if (el.dataset.csvTransformed) return;
-              var csv = extractCsv(el);
-              if ((csv.match(/"/g) || []).length < 2) return;
-              var table = buildTable(csv);
-              if (!table) return;
-              el.dataset.csvTransformed = '1';
-              var parent = el.parentElement;
-              if (parent && parent.tagName === 'P' && parent.children.length === 1) {
-                parent.replaceWith(table);
-              } else {
-                el.replaceWith(table);
-              }
-            });
+            var body = details.querySelector('.details-content') || details;
+            var table = buildTable(data);
+            if (!table) return;
+            details.dataset.sizeChartInjected = '1';
+            body.insertBefore(table, body.firstChild);
           });
         }
 
