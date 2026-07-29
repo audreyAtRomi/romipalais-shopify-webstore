@@ -224,6 +224,10 @@
         table-layout: fixed;
       }
 
+      .size-references-label {
+        font-style: italic;
+      }
+
       .text-block:has(> .size-and-fit-table),
       .text-block:has(> .size-and-fit-table) .size-and-fit-table {
         max-width: none;
@@ -298,11 +302,16 @@
             var table = buildTable(data);
             if (!table) return;
             details.dataset.sizeChartInjected = '1';
+            var label = document.createElement('p');
+            label.className = 'size-references-label';
+            label.textContent = 'Size references';
             var proseBlock = body.querySelector('.text-block');
             if (proseBlock) {
               proseBlock.after(table);
+              proseBlock.after(label);
             } else {
               body.insertBefore(table, body.firstChild);
+              body.insertBefore(label, body.firstChild);
             }
           });
         }
