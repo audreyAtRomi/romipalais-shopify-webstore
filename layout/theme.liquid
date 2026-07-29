@@ -298,7 +298,12 @@
             var table = buildTable(data);
             if (!table) return;
             details.dataset.sizeChartInjected = '1';
-            body.insertBefore(table, body.firstChild);
+            var proseBlock = body.querySelector('.text-block');
+            if (proseBlock) {
+              proseBlock.after(table);
+            } else {
+              body.insertBefore(table, body.firstChild);
+            }
           });
         }
 
