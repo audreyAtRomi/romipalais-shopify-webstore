@@ -442,7 +442,7 @@
                     "text_VdG98J": {
                       "type": "text",
                       "settings": {
-                        "text": "{% render 'size-and-fit-table', product: closest.product %}<p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p>",
+                        "text": "<p>{{ closest.product.metafields.custom.size_and_fit | metafield_tag }}</p><p>Talia is 5'7\" (31.5\" - 25\" - 36.5\") and wears size S.</p><p><em>Product Measurements</em></p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
