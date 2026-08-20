@@ -403,7 +403,7 @@
                     "text_qLGEN9": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>{{ closest.product.metafields.custom.material_and_care | metafield_tag }}</p><p>All of our fabrics, including the lining, have been pre-washed to help minimize shrinkage. To maintain the best fit and quality, proper garment care is still recommended. </p><p>Machine wash cold on a gentle cycle or hand wash cold. Gently squeeze out excess water, do not wring. Lay flat to dry whenever possible, or fold over a hanger to dry. Do not hang bottoms by the waistband, as this may stretch the fabric.</p>",
+                        "text": "<p>{{ closest.product.metafields.custom.material_and_care | metafield_tag }}</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
