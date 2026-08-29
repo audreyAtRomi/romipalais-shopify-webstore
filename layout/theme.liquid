@@ -234,6 +234,10 @@
         --max-width: none;
         width: 100%;
       }
+
+      shopify-forms-embed {
+        --form-field-border: none;
+      }
 </style>
     {%- if template.name == 'product' and product.metafields.custom.real_life_references -%}
       <script type="application/json" id="size-chart-data">{{ product.metafields.custom.real_life_references.value | json }}</script>
@@ -326,6 +330,44 @@
           document.addEventListener('DOMContentLoaded', init);
         } else {
           init();
+        }
+      })();
+
+      (function () {
+        var STYLE_ID = 'romi-shopify-forms-override';
+        var CSS = [
+          'input, button, select, textarea,',
+          '[class*="_selectToggle"], [class*="_formField"], [class*="_formFieldContainer"] {',
+          '  box-shadow: none !important;',
+          '}',
+          'input[type="tel"], input[type="email"] {',
+          '  border-bottom: 1px solid rgba(0, 0, 0, 0.2) !important;',
+          '  border-radius: 0 !important;',
+          '}'
+        ].join('\n');
+
+        function inject(embed) {
+          if (!embed.shadowRoot) return;
+          if (embed.shadowRoot.getElementById(STYLE_ID)) return;
+          var style = document.createElement('style');
+          style.id = STYLE_ID;
+          style.textContent = CSS;
+          embed.shadowRoot.appendChild(style);
+        }
+
+        function run() {
+          document.querySelectorAll('shopify-forms-embed').forEach(inject);
+        }
+
+        function bootstrap() {
+          run();
+          new MutationObserver(run).observe(document.body, { childList: true, subtree: true });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bootstrap);
+        } else {
+          bootstrap();
         }
       })();
     </script>
