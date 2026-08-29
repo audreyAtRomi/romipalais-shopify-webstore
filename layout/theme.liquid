@@ -238,6 +238,7 @@
       shopify-forms-embed {
         --form-field-border: none;
         --forms-overlay-background-color: transparent;
+        --container-border-radius: 0;
       }
 </style>
     {%- if template.name == 'product' and product.metafields.custom.real_life_references -%}
@@ -367,6 +368,13 @@
           '}',
           '[class*="_overlayBackground"] {',
           '  background-color: transparent !important;',
+          '}',
+          '[class*="_formContainer"] {',
+          '  border: 1px solid #016fb6 !important;',
+          '  border-radius: 0 !important;',
+          '}',
+          '[class*="_teaser"], [class*="Teaser"] {',
+          '  border-radius: 0 !important;',
           '}'
         ].join('\n');
 
