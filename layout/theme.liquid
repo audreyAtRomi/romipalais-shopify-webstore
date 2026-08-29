@@ -370,7 +370,7 @@
           '[class*="_overlayBackground"] {',
           '  background-color: transparent !important;',
           '}',
-          '[class*="_formContainer"] {',
+          '[class*="_formContainer_"] {',
           '  border: 1px solid #016fb6 !important;',
           '  border-radius: 0 !important;',
           '}',
@@ -380,6 +380,12 @@
           '[class*="_formCloseButton"] {',
           '  background-color: transparent !important;',
           '  border: none !important;',
+          '  color: #ffffff !important;',
+          '}',
+          '[class*="_formCloseButton"] svg {',
+          '  color: #ffffff !important;',
+          '  fill: #ffffff !important;',
+          '  stroke: #ffffff !important;',
           '}'
         ].join('\n');
 
