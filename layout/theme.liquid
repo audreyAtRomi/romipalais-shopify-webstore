@@ -239,6 +239,7 @@
         --form-field-border: none;
         --forms-overlay-background-color: transparent;
         --container-border-radius: 0;
+        --button-close-background-color: transparent;
       }
 </style>
     {%- if template.name == 'product' and product.metafields.custom.real_life_references -%}
@@ -375,6 +376,10 @@
           '}',
           '[class*="_teaser"], [class*="Teaser"] {',
           '  border-radius: 0 !important;',
+          '}',
+          '[class*="_formCloseButton"] {',
+          '  background-color: transparent !important;',
+          '  border: none !important;',
           '}'
         ].join('\n');
 
